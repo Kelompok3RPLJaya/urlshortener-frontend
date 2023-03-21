@@ -38,11 +38,13 @@ const Register = () => {
         },
         body: JSON.stringify(data),
       });
+      const responseData = await response.json();
       if (response.ok) {
-        alert("yee sukses");
+        alert(responseData.message);
         console.log(data);
       } else {
-        alert("loo gagal");
+        alert(responseData.message);
+        console.log(responseData);
       }
     } catch (error) {
       console.error(error);
