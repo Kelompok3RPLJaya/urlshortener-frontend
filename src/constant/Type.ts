@@ -1,6 +1,7 @@
 export default interface FormValues {
-  username: string;
+  name: string;
   email: string;
   password: string;
   agreement: boolean;
+  reminder: boolean;
 }
