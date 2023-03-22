@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 import FormValues from "@/constant/Type";
+import { FormDataLogin } from "@/constant/Data";
 import TextInput from "@/components/TextInput";
 import Link from "next/link";
-import { FormDataRegister } from "@/constant/Data";
 import Popup from "@/components/Popup";
-import { useRouter } from "next/router";
 
-const Register = () => {
+const Login = () => {
   const router = useRouter();
   const {
     register,
@@ -16,7 +16,6 @@ const Register = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  register("name", { required: "please enter a username" });
   register("email", {
     required: "please enter your email",
     pattern: {
@@ -31,13 +30,13 @@ const Register = () => {
       message: "Minimum 8 characters",
     },
   });
-  register("agreement", { required: "This agreement is required" });
+  register("reminder");
   const [responseMessage, setResponseMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const onSubmit = async (data: FormValues) => {
     try {
       const response = await fetch(
-        "https://url-shortener-production-2abe.up.railway.app/api/user",
+        "https://url-shortener-production-2abe.up.railway.app/api/user/login",
         {
           method: "POST",
           headers: {
@@ -56,15 +55,13 @@ const Register = () => {
         setIsPopUpVisible(true);
         console.log(responseData);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
     reset();
   };
 
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
-    if (responseMessage == "Berhasil Menambahkan User") {
+    if (responseMessage == "Berhasil Login") {
       router.push("/");
     }
   };
@@ -76,10 +73,10 @@ const Register = () => {
       }`}
     >
       <div className="h-full flex flex-col justify-between max-w-[400px] container mx-auto md:justify-center md:gap-y-4 md:max-w-md md:h-fit">
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-8">
           <div className="flex flex-col gap-y-3">
-            <h2 className="text-3xl font-bold text-[#6165D7] md:text-4xl">
-              Create a new account
+            <h2 className="text-3xl font-bold text-[#6165D7] tracking-wide md:text-4xl">
+              Welcome back 👋🏼
             </h2>
             <p className="text-[#9E9CC9]">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -91,7 +88,7 @@ const Register = () => {
             className="flex flex-col gap-y-6"
           >
             <div className="flex flex-col gap-y-2">
-              {FormDataRegister.map((field) => (
+              {FormDataLogin.map((field) => (
                 <TextInput
                   key={field.name}
                   type={field.type}
@@ -101,21 +98,19 @@ const Register = () => {
                   error={errors[field.name]?.message}
                 />
               ))}
-              <div className="flex items-center gap-x-2">
-                <input type="checkbox" {...register("agreement")} />
-                <label
-                  htmlFor="checkbox"
-                  className="text-[.8rem] md:text-sm text-[#041267] text-opacity-80"
-                >
-                  I agree to the{" "}
-                  <Link href="" className="text-[#766FF9]">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="" className="text-[#766FF9]">
-                    Privacy Policy
-                  </Link>
-                </label>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-x-2">
+                  <input type="checkbox" {...register("reminder")} />
+                  <label
+                    htmlFor="checkbox"
+                    className="text-sm text-[#041267] text-opacity-80"
+                  >
+                    remember me
+                  </label>
+                </div>
+                <Link href="" className="text-sm text-[#766FF9]">
+                  Forgot password?
+                </Link>
               </div>
             </div>
             {isPopUpVisible && (
@@ -125,15 +120,15 @@ const Register = () => {
               type="submit"
               className="px-6 py-3 rounded-3xl bg-[#766FF9] font-semibold text-gray-100"
             >
-              Create account
+              Log in now
             </button>
           </form>
         </div>
         <div>
           <p className="text-center md:text-sm text-[#041267] text-opacity-80">
             already have an account?{" "}
-            <Link href="/Login" className="text-[#766FF9]">
-              Log in here
+            <Link href="/Register" className="text-[#766FF9]">
+              Sign up here
             </Link>
           </p>
         </div>
@@ -142,4 +137,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
