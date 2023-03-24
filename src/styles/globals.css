@@ -4,6 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
+.landing-h {
+  height: calc(100vh - 4.5rem);
+}
+
+.side-shadow {
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-h {
+  height: calc(100vh - 16.5rem);
+}
+
+.auth-bg {
+  background: linear-gradient(180deg, #e9f0f8 0%, #ced9eb 100%);
+}
+
 /* :root {
   --max-width: 1100px;
   --border-radius: 12px;
