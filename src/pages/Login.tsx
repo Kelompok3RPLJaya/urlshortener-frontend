@@ -48,6 +48,7 @@ const Login = () => {
       const responseData = await response.json();
       if (response.ok) {
         setResponseMessage(responseData.message);
+        localStorage.setItem("token", responseData.data.token);
         setIsPopUpVisible(true);
         console.log(data);
       } else {
@@ -62,7 +63,7 @@ const Login = () => {
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
     if (responseMessage == "Berhasil Login") {
-      router.push("/");
+      router.push("/User");
     }
   };
 

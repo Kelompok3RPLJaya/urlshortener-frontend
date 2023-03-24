@@ -50,6 +50,7 @@ const Register = () => {
       if (response.ok) {
         setResponseMessage(responseData.message);
         setIsPopUpVisible(true);
+        localStorage.setItem("token", responseData.data.token);
         console.log(data);
       } else {
         setResponseMessage(responseData.message);

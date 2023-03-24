@@ -1,3 +1,7 @@
+.landing-h {
+  height: calc(100vh - 5rem);
+}
+
 /* .main {
   display: flex;
   flex-direction: column;
