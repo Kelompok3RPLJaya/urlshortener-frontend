@@ -20,10 +20,12 @@ const Sidebar = () => {
   };
   const [active, setActive] = useState("dashboard");
   const [currentPage, setCurrentPage] = useState(<Dashboard />);
+  
   const updateActive = (value: string, page: JSX.Element) => {
     setActive(value);
     setCurrentPage(page);
   };
+
 
   const links = [
     {
@@ -67,6 +69,7 @@ const Sidebar = () => {
             sidebar ? "w-[15rem]" : "md:min-w-[5rem] w-0"
           }`}
         >
+          
           <div
             className={`flex flex-col justify-between gap-y-2 py-4 box-border ${
               sidebar ? "pr-4" : "w-full px-4"
@@ -85,6 +88,7 @@ const Sidebar = () => {
                 } ${sidebar ? "gap-x-3 px-8" : "justify-center"}`}
                 onClick={link.onClick}
               >
+
                 {link.icon} {sidebar ? link.title : null}
               </Link>
             ))}

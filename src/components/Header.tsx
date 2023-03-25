@@ -24,11 +24,13 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
   return (
     <section className="min-h-[4.5rem] w-full bg-indigo-50 flex justify-between px-[1.6rem] box-border text-[#041267]">
       <div className="flex items-center gap-x-8">
+        
         {currentPath == "/User" && (
           <button type="button" onClick={HandleOnClick}>
             <HiOutlineMenu size={30} />
           </button>
         )}
+
         <Link href="/" className="flex items-center gap-x-2 text-lg">
           <SiLinkfire size={28} />
           Shortify
@@ -62,6 +64,7 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
             >
               Register
             </Link>
+            
             <Link
               href="/Login"
               className="px-4 py-2 text-sm bg-[#041267] text-gray-100 rounded-3xl"
