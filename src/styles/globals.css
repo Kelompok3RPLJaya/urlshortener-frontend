@@ -20,6 +20,12 @@
   background: linear-gradient(180deg, #e9f0f8 0%, #ced9eb 100%);
 }
 
+@media (min-width: 768px) {
+  .links-w {
+    width: calc(100vw - 5rem);
+  }
+}
+
 /* :root {
   --max-width: 1100px;
   --border-radius: 12px;
