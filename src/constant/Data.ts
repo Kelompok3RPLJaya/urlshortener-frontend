@@ -79,4 +79,12 @@ export const LinkProps = [
     short_url: "shortify.testingEmpat",
     long_url: "https://docs.github.com/en/pull-requests/testing5",
   },
+    {
+    id: 6,
+    date: "2 January 2023",
+    user: "Testing Empat",
+    title: "Testing link shortener shortify keempat",
+    short_url: "shortify.testingEmpat",
+    long_url: "https://docs.github.com/en/pull-requests/testing5",
+  },
 ];

@@ -9,6 +9,7 @@ import Header from "./Header";
 import Dashboard from "@/pages/sections/Dashboard";
 import Homepage from "@/pages/sections/Homepage";
 import Feeds from "@/pages/sections/Feeds";
+import PrivateInput from "@/pages/sections/PrivateInput";
 
 const Sidebar = () => {
   const [sidebar, showSidebar] = useState(false);
@@ -21,12 +22,11 @@ const Sidebar = () => {
   };
   const [active, setActive] = useState("dashboard");
   const [currentPage, setCurrentPage] = useState(<Dashboard />);
-  
+
   const updateActive = (value: string, page: JSX.Element) => {
     setActive(value);
     setCurrentPage(page);
   };
-
 
   const links = [
     {
@@ -51,7 +51,7 @@ const Sidebar = () => {
       title: "About",
       icon: <IoMdLink size={18} />,
       active: active === "about",
-      onClick: () => updateActive("about", <Dashboard />),
+      onClick: () => updateActive("about", <PrivateInput />),
     },
     {
       title: "Setting",
@@ -70,7 +70,6 @@ const Sidebar = () => {
             sidebar ? "w-[15rem]" : "md:min-w-[5rem] w-0"
           }`}
         >
-          
           <div
             className={`flex flex-col justify-between gap-y-2 py-4 box-border ${
               sidebar ? "pr-4" : "w-full px-4"
@@ -89,7 +88,6 @@ const Sidebar = () => {
                 } ${sidebar ? "gap-x-3 px-8" : "justify-center"}`}
                 onClick={link.onClick}
               >
-
                 {link.icon} {sidebar ? link.title : null}
               </Link>
             ))}
