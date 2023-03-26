@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { LinkProps } from "@/constant/Data";
 
@@ -14,6 +14,20 @@ interface FilterValues {
   isPublic: boolean;
 }
 
+interface LinkData {
+  id: string;
+  title: string;
+  long_url: string;
+  short_url: string;
+  views: number;
+  is_private: boolean;
+  is_feeds: boolean;
+  user_id: string;
+  created_at: string;
+  update_at: string;
+  DeleteAt: any | undefined;
+}
+
 const Dashboard = () => {
   const {
     register,
@@ -26,6 +40,17 @@ const Dashboard = () => {
     console.log(data);
     reset();
   };
+
+  const [data, setData] = useState<LinkData[]>([]);
+  async function fetchData() {
+    const response = await fetch("/api/dafian");
+    const data = await response.json();
+    setData(data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const [details, setDetails] = useState<JSX.Element>(
     <LinkDetails
