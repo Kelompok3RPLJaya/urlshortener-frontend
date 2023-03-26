@@ -1,3 +1,4 @@
+import HomeLinkCard from "@/components/HomeLinkCard";
 import React from "react";
 import Hero from "../Hero";
 

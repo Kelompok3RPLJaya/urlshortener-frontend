@@ -8,6 +8,7 @@ import { TbSettings2 } from "react-icons/tb";
 import Header from "./Header";
 import Dashboard from "@/pages/sections/Dashboard";
 import Homepage from "@/pages/sections/Homepage";
+import Feeds from "@/pages/sections/Feeds";
 
 const Sidebar = () => {
   const [sidebar, showSidebar] = useState(false);
@@ -44,7 +45,7 @@ const Sidebar = () => {
       title: "Feeds",
       icon: <RxStack size={18} />,
       active: active === "feeds",
-      onClick: () => updateActive("feeds", <Dashboard />),
+      onClick: () => updateActive("feeds", <Feeds />),
     },
     {
       title: "About",
