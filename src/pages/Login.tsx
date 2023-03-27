@@ -36,7 +36,7 @@ const Login = () => {
   const onSubmit = async (data: FormValues) => {
     try {
       const response = await fetch(
-        "https://url-shortener-production-2abe.up.railway.app/api/user/login",
+        "https://url-shortener-production-e495.up.railway.app/api/user/login",
         {
           method: "POST",
           headers: {

@@ -29,6 +29,7 @@ interface LinkData {
 }
 
 const Dashboard = () => {
+  // const token = window.localStorage.getItem("token");
   const {
     register,
     handleSubmit,
@@ -43,9 +44,20 @@ const Dashboard = () => {
 
   const [data, setData] = useState<LinkData[]>([]);
   async function fetchData() {
-    const response = await fetch("/api/dafian");
-    const data = await response.json();
-    setData(data);
+    try {
+      const response = await fetch(
+        "https://url-shortener-production-e495.up.railway.app/api/url_shortener/me",
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const responseData = await response.json();
+      console.log(responseData.data);
+
+      setData(responseData.data);
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -54,23 +66,31 @@ const Dashboard = () => {
 
   const [details, setDetails] = useState<JSX.Element>(
     <LinkDetails
-      title={LinkProps[0].title}
-      date={LinkProps[0].date}
-      user={LinkProps[0].user}
-      short_url={LinkProps[0].short_url}
-      long_url={LinkProps[0].long_url}
+      title={data[0]?.title}
+      date={data[0]?.created_at}
+      user={data[0]?.user_id}
+      short_url={data[0]?.short_url}
+      long_url={data[0]?.long_url}
     />
   );
-  const [active, setActive] = useState(1);
-  const showDetails = (id: number) => {
-    setActive(LinkProps[id - 1].id);
+
+  const [active, setActive] = useState<string>(data[0]?.id);
+  const showDetails = (
+    id: string,
+    title: string,
+    date: string,
+    user: string,
+    short_url: string,
+    long_url: string
+  ) => {
+    setActive(id);
     setDetails(
       <LinkDetails
-        title={LinkProps[id - 1].title}
-        date={LinkProps[id - 1].date}
-        user={LinkProps[id - 1].user}
-        short_url={LinkProps[id - 1].short_url}
-        long_url={LinkProps[id - 1].long_url}
+        title={title}
+        date={date}
+        user={user}
+        short_url={short_url}
+        long_url={long_url}
       />
     );
   };
@@ -144,18 +164,25 @@ const Dashboard = () => {
       </div>
       <div className="flex overflow-y-clip">
         <div className="w-full flex flex-col gap-y-6 py-6 sm:w-[45%] md:w-1/3 overflow-y-auto">
-          {LinkProps.map((link) => (
+          {data.map((link) => (
             <div
               className={`flex flex-col px-8 min-h-[8rem] gap-y-1 justify-center border-t border-b cursor-pointer ${
                 active == link.id ? "bg-indigo-100" : ""
               }`}
               onClick={() => {
-                showDetails(link.id);
+                showDetails(
+                  link.id,
+                  link.title,
+                  link.created_at,
+                  link.user_id,
+                  link.short_url,
+                  link.long_url
+                );
               }}
               key={link.id}
             >
               <LinkCard
-                date={link.date}
+                date={link.created_at}
                 title={link.title}
                 short_url={link.short_url}
               />
