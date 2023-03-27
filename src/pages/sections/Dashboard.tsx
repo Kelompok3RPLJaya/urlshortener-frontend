@@ -23,7 +23,7 @@ interface LinkData {
   views: number;
   is_private: boolean;
   is_feeds: boolean;
-  user_id: string;
+  username: string;
   created_at: string;
   update_at: string;
   DeleteAt: any | undefined;
@@ -76,7 +76,7 @@ const Dashboard = () => {
     <LinkDetails
       title={data[0]?.title}
       date={data[0]?.created_at}
-      user={data[0]?.user_id}
+      user={data[0]?.username}
       short_url={data[0]?.short_url}
       long_url={data[0]?.long_url}
     />
@@ -183,7 +183,7 @@ const Dashboard = () => {
                     link.id,
                     link.title,
                     link.created_at,
-                    link.user_id,
+                    link.username,
                     link.short_url,
                     link.long_url
                   );
