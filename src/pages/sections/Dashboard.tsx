@@ -5,6 +5,7 @@ import { LinkProps } from "@/constant/Data";
 import { AiOutlineSwap } from "react-icons/ai";
 import { TbPlus } from "react-icons/tb";
 import { useForm } from "react-hook-form";
+import { CiSearch } from "react-icons/ci";
 import LinkCard from "@/components/LinkCard";
 import LinkDetails from "@/components/LinkDetails";
 
@@ -22,13 +23,14 @@ interface LinkData {
   views: number;
   is_private: boolean;
   is_feeds: boolean;
-  user_id: string;
+  username: string;
   created_at: string;
   update_at: string;
   DeleteAt: any | undefined;
 }
 
 const Dashboard = () => {
+  // const token = window.localStorage.getItem("token");
   const {
     register,
     handleSubmit,
@@ -42,10 +44,28 @@ const Dashboard = () => {
   };
 
   const [data, setData] = useState<LinkData[]>([]);
+  const [success, setSuccess] = useState(false);
   async function fetchData() {
-    const response = await fetch("/api/dafian");
-    const data = await response.json();
-    setData(data);
+    try {
+      const response = await fetch(
+        "https://url-shortener-production-e495.up.railway.app/api/url_shortener/me",
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const responseData = await response.json();
+      console.log(responseData.data);
+
+      if (response.ok) {
+        setData(responseData.data);
+        setSuccess(true);
+      } else {
+        console.log(responseData.message);
+        setSuccess(false);
+      }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -54,23 +74,31 @@ const Dashboard = () => {
 
   const [details, setDetails] = useState<JSX.Element>(
     <LinkDetails
-      title={LinkProps[0].title}
-      date={LinkProps[0].date}
-      user={LinkProps[0].user}
-      short_url={LinkProps[0].short_url}
-      long_url={LinkProps[0].long_url}
+      title={data[0]?.title}
+      date={data[0]?.created_at}
+      user={data[0]?.username}
+      short_url={data[0]?.short_url}
+      long_url={data[0]?.long_url}
     />
   );
-  const [active, setActive] = useState(1);
-  const showDetails = (id: number) => {
-    setActive(LinkProps[id - 1].id);
+
+  const [active, setActive] = useState<string>(data[0]?.id);
+  const showDetails = (
+    id: string,
+    title: string,
+    date: string,
+    user: string,
+    short_url: string,
+    long_url: string
+  ) => {
+    setActive(id);
     setDetails(
       <LinkDetails
-        title={LinkProps[id - 1].title}
-        date={LinkProps[id - 1].date}
-        user={LinkProps[id - 1].user}
-        short_url={LinkProps[id - 1].short_url}
-        long_url={LinkProps[id - 1].long_url}
+        title={title}
+        date={date}
+        user={user}
+        short_url={short_url}
+        long_url={long_url}
       />
     );
   };
@@ -142,28 +170,52 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-      <div className="flex overflow-y-clip">
+      <div className="flex h-full overflow-y-clip">
         <div className="w-full flex flex-col gap-y-6 py-6 sm:w-[45%] md:w-1/3 overflow-y-auto">
-          {LinkProps.map((link) => (
-            <div
-              className={`flex flex-col px-8 min-h-[8rem] gap-y-1 justify-center border-t border-b cursor-pointer ${
-                active == link.id ? "bg-indigo-100" : ""
-              }`}
-              onClick={() => {
-                showDetails(link.id);
-              }}
-              key={link.id}
-            >
-              <LinkCard
-                date={link.date}
-                title={link.title}
-                short_url={link.short_url}
-              />
+          {success ? (
+            data.map((link) => (
+              <div
+                className={`flex flex-col px-8 min-h-[8rem] gap-y-1 justify-center border-t border-b cursor-pointer ${
+                  active == link.id ? "bg-indigo-100" : ""
+                }`}
+                onClick={() => {
+                  showDetails(
+                    link.id,
+                    link.title,
+                    link.created_at,
+                    link.username,
+                    link.short_url,
+                    link.long_url
+                  );
+                }}
+                key={link.id}
+              >
+                <LinkCard
+                  date={link.created_at}
+                  title={link.title}
+                  short_url={link.short_url}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col justify-center items-center gap-y-2">
+              <CiSearch size={40} color="#041267" className="opacity-50" />
+              <p className="tracking-wide text-[#041267] text-opacity-70">
+                Can&rsquo;t find any link for now
+              </p>
             </div>
-          ))}
+          )}
         </div>
-        <div className="hidden sm:static sm:w-[55%] md:w-2/3 sm:flex flex-col p-8 gap-y-6 bg-indigo-50 overflow-y-auto">
-          {active ? details : null}
+        <div className="hidden sm:static sm:w-[55%] md:w-2/3 sm:flex flex-col items-center p-8 gap-y-6 bg-indigo-50 overflow-y-auto h-full">
+          {active ? (
+            details
+          ) : (
+            <div>
+              <p className="tracking-wide text-[#041267] text-opacity-70">
+                No link selected
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

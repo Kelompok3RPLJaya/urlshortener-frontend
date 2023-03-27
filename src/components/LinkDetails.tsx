@@ -16,7 +16,7 @@ interface linkProps {
 
 const LinkDetails = ({ title, date, user, short_url, long_url }: linkProps) => {
   return (
-    <>
+    <div className="w-full flex flex-col gap-y-6 h-full">
       <div className="w-full flex flex-col lg:flex-row gap-y-2 shadow-md py-6 px-8 box-border bg-white">
         <div className="w-full flex flex-col gap-y-4">
           <h3 className="text-xl font-semibold text-[#041267]">{title}</h3>
@@ -68,7 +68,7 @@ const LinkDetails = ({ title, date, user, short_url, long_url }: linkProps) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
