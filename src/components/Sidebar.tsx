@@ -57,7 +57,7 @@ const Sidebar = () => {
       title: "Setting",
       icon: <TbSettings2 size={18} />,
       active: active === "setting",
-      onClick: () => updateActive("setting", <Dashboard />),
+      onClick: () => updateActive("setting", <Setting />),
     },
   ];
 
