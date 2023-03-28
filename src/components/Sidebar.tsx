@@ -9,7 +9,7 @@ import Header from "./Header";
 import Dashboard from "@/pages/sections/Dashboard";
 import Homepage from "@/pages/sections/Homepage";
 import Feeds from "@/pages/sections/Feeds";
-import PrivateInput from "@/pages/sections/PrivateInput";
+import PrivateInputNav from "./PrivateInputNav";
 
 const Sidebar = () => {
   const [sidebar, showSidebar] = useState(false);
@@ -57,7 +57,7 @@ const Sidebar = () => {
       title: "Setting",
       icon: <TbSettings2 size={18} />,
       active: active === "setting",
-      onClick: () => updateActive("setting", <Setting />),
+      onClick: () => updateActive("setting", <SettingNav />),
     },
   ];
 

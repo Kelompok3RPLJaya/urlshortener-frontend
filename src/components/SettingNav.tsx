@@ -1,76 +1,150 @@
 import React, { useState } from "react";
+import Link from "next/link";
+import Profile from "@/pages/sections/setting-section/Profile";
 import { BiChevronDown } from "react-icons/bi";
 
-interface currentSection {
-  curSection: JSX.Element;
-}
-
-const SettingNav = ({ curSection }: currentSection) => {
+const SettingNav = () => {
   const [profDetails, setProfDetails] = useState(false);
   const [profile, setProfile] = useState(false);
   const HandleProfDetails = () => {
-    if (profDetails) {
-      setProfDetails(false);
-    } else {
-      setProfDetails(true);
-    }
+    setProfDetails(!profDetails);
   };
   const HandleProfile = () => {
-    if (profile) {
-      setProfile(false);
-    } else {
-      setProfile(true);
-    }
+    setProfile(!profile);
   };
   const [active, setActive] = useState("profile");
-  const [section, setSection] = useState<JSX.Element>();
+  const [curSection, setCurSection] = useState<JSX.Element>(<Profile />);
   const updateActive = (value: string, section: JSX.Element) => {
     setActive(value);
-    setSection(section);
+    setCurSection(section);
   };
+
+  const links1 = [
+    {
+      title: "Profile",
+      active: active === "profile",
+      onClick: () => {
+        updateActive("profile", <Profile />);
+        setProfile(false);
+      },
+    },
+    {
+      title: "Integration",
+      active: active === "integration",
+      onClick: () => {
+        updateActive("integration", <Profile />);
+        setProfile(false);
+      },
+    },
+  ];
+
+  const links2 = [
+    {
+      title: "Account details",
+      active: active === "account",
+      onClick: () => {
+        updateActive("account", <Profile />);
+        setProfile(false);
+      },
+    },
+    {
+      title: "Custom domains",
+      active: active === "custom",
+      onClick: () => {
+        updateActive("custom", <Profile />);
+        setProfile(false);
+      },
+    },
+    {
+      title: "Groups",
+      active: active === "groups",
+      onClick: () => {
+        updateActive("groups", <Profile />);
+        setProfile(false);
+      },
+    },
+    {
+      title: "CSV bulk shortening",
+      active: active === "csv",
+      onClick: () => {
+        updateActive("csv", <Profile />);
+        setProfile(false);
+      },
+    },
+  ];
   return (
-    <>
-      <button
-        type="button"
-        onClick={HandleProfile}
-        className="min-h-[4rem] font-semibold text-lg flex items-center justify-center gap-x-2 border-b"
-      >
-        Profile <BiChevronDown size={20} />
-      </button>
-      {profile && (
-        <div className="text-[#041267] flex flex-col px-8 py-6 gap-y-8 h-full">
-          <div className="flex flex-col gap-y-2">
-            <h2 className="font-medium">Your settings</h2>
-            <p className="font-light">Profile</p>
-            <p className="font-light">Integration</p>
+    <section className="w-full landing-h links-w flex">
+      <div className="absolute w-full bg-white md:static md:w-[45%]">
+        <button
+          type="button"
+          onClick={HandleProfile}
+          className="min-h-[4rem] w-full font-semibold text-lg flex items-center justify-center gap-x-2 border-b capitalize"
+        >
+          {active} <BiChevronDown size={20} />
+        </button>
+        {profile && (
+          <div className="text-[#041267] flex flex-col px-4 py-6 gap-y-8 h-full">
+            <div className="flex flex-col gap-y-2">
+              <h2 className="font-medium">Your settings</h2>
+              {links1.map((link) => (
+                <Link
+                  href=""
+                  className={`font-light px-4 ${
+                    link.active ? "bg-indigo-50" : ""
+                  }`}
+                  onClick={link.onClick}
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <h2 className="font-medium">Account settings</h2>
+              <button
+                type="button"
+                onClick={HandleProfDetails}
+                className="self-start flex items-center"
+              >
+                vron <BiChevronDown />
+              </button>
+              {profDetails && (
+                <div className="flex flex-col gap-y-2">
+                  {links2.map((link) => (
+                    <Link
+                      href=""
+                      className={`font-light px-4 ${
+                        link.active ? "bg-indigo-50" : ""
+                      }`}
+                      onClick={link.onClick}
+                    >
+                      {link.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <h2 className="font-medium">Developer settings</h2>
+              <Link
+                href=""
+                className={`font-light px-4 ${
+                  active == "API" ? "bg-indigo-50" : ""
+                }`}
+                onClick={() => {
+                  setActive("API");
+                  setCurSection(<Profile />);
+                }}
+              >
+                API
+              </Link>
+            </div>
           </div>
-          <div className="flex flex-col gap-y-2">
-            <h2 className="font-medium">Account settings</h2>
-            <button
-              type="button"
-              onClick={HandleProfDetails}
-              className="self-start flex items-center"
-            >
-              vron <BiChevronDown />
-            </button>
-            {profDetails && (
-              <div className="flex flex-col gap-y-2">
-                <p className="font-light">Account details</p>
-                <p className="font-light">Custom domains</p>
-                <p className="font-light">Groups</p>
-                <p className="font-light">CSV bulk shortening</p>
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col gap-y-2">
-            <h2 className="font-medium">Developer settings</h2>
-            <p className="font-light">API</p>
-          </div>
-        </div>
-      )}
+        )}
+
+        {/* {profile && section} */}
+      </div>
       {curSection}
-      {/* {profile && section} */}
-    </>
+    </section>
   );
 };
 
