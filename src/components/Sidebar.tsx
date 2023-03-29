@@ -76,7 +76,7 @@ const Sidebar = () => {
               <Link
                 key={link.title}
                 href=""
-                className={`flex items-center h-8 text-[.9rem] ${
+                className={`flex items-center h-10 text-[.9rem] ${
                   link.active
                     ? sidebar
                       ? "bg-indigo-300 rounded-r-3xl"
