@@ -45,6 +45,11 @@ const Dashboard = () => {
 
   const [data, setData] = useState<LinkData[]>([]);
   const [success, setSuccess] = useState(false);
+
+  const [details, setDetails] = useState<JSX.Element>();
+
+  const [active, setActive] = useState<string>();
+
   async function fetchData() {
     try {
       const response = await fetch(
@@ -56,11 +61,22 @@ const Dashboard = () => {
         }
       );
       const responseData = await response.json();
-      console.log(responseData.data);
-
       if (response.ok) {
         setData(responseData.data);
         setSuccess(true);
+        setActive(responseData.data[0]?.id);
+        setDetails(
+          <LinkDetails
+            title={responseData.data[0]?.title}
+            date={responseData.data[0]?.created_at}
+            user={responseData.data[0]?.username}
+            short_url={responseData.data[0]?.short_url}
+            long_url={responseData.data[0]?.long_url}
+            is_feeds={responseData.data[0]?.is_feeds}
+            id={responseData.data[0]?.id}
+            is_private={responseData.data[0]?.is_private}
+          />
+        );
       } else {
         console.log(responseData.message);
         setSuccess(false);
@@ -72,24 +88,15 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const [details, setDetails] = useState<JSX.Element>(
-    <LinkDetails
-      title={data[0]?.title}
-      date={data[0]?.created_at}
-      user={data[0]?.username}
-      short_url={data[0]?.short_url}
-      long_url={data[0]?.long_url}
-    />
-  );
-
-  const [active, setActive] = useState<string>(data[0]?.id);
   const showDetails = (
     id: string,
     title: string,
     date: string,
     user: string,
     short_url: string,
-    long_url: string
+    long_url: string,
+    is_feeds: boolean,
+    is_private: boolean
   ) => {
     setActive(id);
     setDetails(
@@ -99,6 +106,9 @@ const Dashboard = () => {
         user={user}
         short_url={short_url}
         long_url={long_url}
+        is_feeds={is_feeds}
+        id={id}
+        is_private={is_private}
       />
     );
   };
@@ -185,7 +195,9 @@ const Dashboard = () => {
                     link.created_at,
                     link.username,
                     link.short_url,
-                    link.long_url
+                    link.long_url,
+                    link.is_feeds,
+                    link.is_private
                   );
                 }}
                 key={link.id}
