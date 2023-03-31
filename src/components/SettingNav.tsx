@@ -4,8 +4,8 @@ import Profile from "@/pages/sections/setting-section/Profile";
 import { BiChevronDown } from "react-icons/bi";
 
 const SettingNav = () => {
-  const [profDetails, setProfDetails] = useState(false);
-  const [profile, setProfile] = useState(false);
+  const [profDetails, setProfDetails] = useState(true);
+  const [profile, setProfile] = useState(true);
   const HandleProfDetails = () => {
     setProfDetails(!profDetails);
   };
@@ -25,7 +25,7 @@ const SettingNav = () => {
       active: active === "profile",
       onClick: () => {
         updateActive("profile", <Profile />);
-        setProfile(false);
+        // setProfile(false);
       },
     },
     {
@@ -33,7 +33,7 @@ const SettingNav = () => {
       active: active === "integration",
       onClick: () => {
         updateActive("integration", <Profile />);
-        setProfile(false);
+        // setProfile(false);
       },
     },
   ];
@@ -44,7 +44,7 @@ const SettingNav = () => {
       active: active === "account",
       onClick: () => {
         updateActive("account", <Profile />);
-        setProfile(false);
+        // setProfile(false);
       },
     },
     {
@@ -52,7 +52,7 @@ const SettingNav = () => {
       active: active === "custom",
       onClick: () => {
         updateActive("custom", <Profile />);
-        setProfile(false);
+        // setProfile(false);
       },
     },
     {
@@ -60,7 +60,7 @@ const SettingNav = () => {
       active: active === "groups",
       onClick: () => {
         updateActive("groups", <Profile />);
-        setProfile(false);
+        // setProfile(false);
       },
     },
     {
@@ -68,28 +68,29 @@ const SettingNav = () => {
       active: active === "csv",
       onClick: () => {
         updateActive("csv", <Profile />);
-        setProfile(false);
+        // setProfile(false);
       },
     },
   ];
   return (
-    <section className="w-full landing-h links-w flex">
-      <div className="absolute w-full bg-white md:static md:w-[45%]">
-        <button
-          type="button"
-          onClick={HandleProfile}
-          className="min-h-[4rem] w-full font-semibold text-lg flex items-center justify-center gap-x-2 border-b capitalize"
-        >
-          {active} <BiChevronDown size={20} />
-        </button>
+    <section className="w-full landing-h links-w flex flex-col relative">
+      <button
+        type="button"
+        onClick={HandleProfile}
+        className="min-h-[4rem] w-full font-semibold text-xl flex items-center justify-center gap-x-2 border-b capitalize"
+      >
+        {active} <BiChevronDown size={20} />
+      </button>
+      <div className="flex overflow-y-clip">
         {profile && (
-          <div className="text-[#041267] flex flex-col px-4 py-6 gap-y-8 h-full">
+          <div className="text-[#041267] flex flex-col px-6 py-8 gap-y-8 bg-white profil-h text-sm setting-h md:border-r absolute w-full top-[4rem] md:static md:w-[45%]">
             <div className="flex flex-col gap-y-2">
               <h2 className="font-medium">Your settings</h2>
               {links1.map((link) => (
                 <Link
                   href=""
-                  className={`font-light px-4 ${
+                  key={link.title}
+                  className={`font-light px-4 py-2 ${
                     link.active ? "bg-indigo-50" : ""
                   }`}
                   onClick={link.onClick}
@@ -103,16 +104,17 @@ const SettingNav = () => {
               <button
                 type="button"
                 onClick={HandleProfDetails}
-                className="self-start flex items-center"
+                className="self-start flex items-center px-4"
               >
-                vron <BiChevronDown />
+                account <BiChevronDown />
               </button>
               {profDetails && (
                 <div className="flex flex-col gap-y-2">
                   {links2.map((link) => (
                     <Link
+                      key={link.title}
                       href=""
-                      className={`font-light px-4 ${
+                      className={`font-light px-4 py-2 ${
                         link.active ? "bg-indigo-50" : ""
                       }`}
                       onClick={link.onClick}
@@ -127,7 +129,7 @@ const SettingNav = () => {
               <h2 className="font-medium">Developer settings</h2>
               <Link
                 href=""
-                className={`font-light px-4 ${
+                className={`font-light px-4 py-2 ${
                   active == "API" ? "bg-indigo-50" : ""
                 }`}
                 onClick={() => {
@@ -142,8 +144,8 @@ const SettingNav = () => {
         )}
 
         {/* {profile && section} */}
+        {curSection}
       </div>
-      {curSection}
     </section>
   );
 };

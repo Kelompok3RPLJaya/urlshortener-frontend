@@ -12,9 +12,17 @@ interface editProps {
   short_url: string;
   is_feeds: boolean;
   id: string;
+  onClick: (message: string) => void;
 }
 
-const EditBar = ({ title, long_url, short_url, is_feeds, id }: editProps) => {
+const EditBar = ({
+  title,
+  long_url,
+  short_url,
+  is_feeds,
+  id,
+  onClick,
+}: editProps) => {
   const {
     register,
     handleSubmit,
@@ -27,6 +35,7 @@ const EditBar = ({ title, long_url, short_url, is_feeds, id }: editProps) => {
     },
   });
 
+  const [isMessage, setIsMessage] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const onSubmit = async (data: editProps) => {
@@ -45,17 +54,20 @@ const EditBar = ({ title, long_url, short_url, is_feeds, id }: editProps) => {
       const responseData = await response.json();
       if (response.ok) {
         setResponseMessage(responseData.message);
+        onClick(responseData.message);
+        setIsMessage(true);
         setIsPopUpVisible(true);
         console.log(data);
       } else {
         setResponseMessage(responseData.message);
+        onClick(responseData.message);
+        setIsMessage(true);
         setIsPopUpVisible(true);
         console.log(responseData);
       }
     } catch (error) {}
     reset();
     console.log(data);
-    window.location.reload();
   };
 
   const [isCopied, setIsCopied] = useState(false);
@@ -66,32 +78,34 @@ const EditBar = ({ title, long_url, short_url, is_feeds, id }: editProps) => {
   };
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
+    setIsCopied(false);
+    setIsMessage(false);
   };
 
   return (
     <section className="w-full landing-h flex flex-col p-5 gap-y-8">
       <div className="flex flex-col gap-y-2">
-        <div className="text-[#041267]">
+        <div className="text-[#041267] text-[1.05rem] font-medium">
           <span>poppins.in/</span>
           {short_url}
         </div>
-        <div className="flex justify-start gap-x-1 items-center text-[.8rem] text-indigo-500">
+        <div className="flex justify-start gap-x-1 items-center text-sm text-indigo-500">
           <button
             type="button"
-            className="flex items-center gap-x-1 px-3 py-2 rounded-md hover:bg-indigo-50"
+            className="flex items-center gap-x-1 px-2 py-2 rounded-md hover:bg-indigo-50"
             onClick={handleCopyClick}
           >
             <MdContentCopy /> Copy
           </button>
           <button
             type="button"
-            className="flex items-center gap-x-1 px-3 py-2 rounded-md hover:bg-indigo-50"
+            className="flex items-center gap-x-1 px-2 py-2 rounded-md hover:bg-indigo-50"
           >
             <AiOutlineQrcode /> Create QR
           </button>
           <button
             type="button"
-            className="flex items-center gap-x-1 px-3 py-2 rounded-md hover:bg-indigo-50"
+            className="flex items-center gap-x-1 px-2 py-2 rounded-md hover:bg-indigo-50"
           >
             <RxTwitterLogo /> Tweet
           </button>
@@ -103,7 +117,7 @@ const EditBar = ({ title, long_url, short_url, is_feeds, id }: editProps) => {
         className="flex flex-col h-full gap-y-6 justify-between"
       >
         <div className="flex flex-col gap-y-6">
-          <h2 className="text-[.9rem] font-medium">Edit Link</h2>
+          <h2 className="font-medium">Edit Link</h2>
           <div className="flex flex-col gap-y-2">
             <div className="bg-indigo-50 flex flex-col gap-y-2 p-3 text-sm">
               <label htmlFor="">Title</label>

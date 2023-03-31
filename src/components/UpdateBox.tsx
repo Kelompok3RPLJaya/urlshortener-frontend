@@ -7,9 +7,10 @@ import Popup from "./Popup";
 interface updateProp {
   id: string;
   is_private: boolean;
+  onClick: () => void;
 }
 
-const UpdateBox = ({ id, is_private }: updateProp) => {
+const UpdateBox = ({ id, is_private, onClick }: updateProp) => {
   interface updateFrom {
     password: string;
   }
@@ -35,7 +36,6 @@ const UpdateBox = ({ id, is_private }: updateProp) => {
   const [message, setMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const onSubmit = async (data: updateFrom) => {
-    console.log(data);
     try {
       const response = await fetch(
         `https://url-shortener-production-e495.up.railway.app/api/url_shortener/private/${id}`,
@@ -49,6 +49,7 @@ const UpdateBox = ({ id, is_private }: updateProp) => {
         }
       );
       const responseData = await response.json();
+      onClick();
       if (response.ok) {
         setMessage(responseData.message);
         console.log(responseData.message);
@@ -62,12 +63,11 @@ const UpdateBox = ({ id, is_private }: updateProp) => {
 
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
-    window.location.reload();
   };
 
   return (
     <>
-      <section className="flex flex-col absolute right-16 top-2/3 translate-y-2 bg-white text-sm text-[#041267] shadow-md">
+      <section className="flex flex-col absolute right-5 top-[120%] translate-y-2 bg-white text-sm text-[#041267] shadow-md">
         <form
           action=""
           className="flex flex-col w-[11rem]"

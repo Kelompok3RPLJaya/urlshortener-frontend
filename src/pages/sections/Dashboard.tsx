@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { LinkProps } from "@/constant/Data";
+
 import { AiOutlineSwap } from "react-icons/ai";
 import { TbPlus } from "react-icons/tb";
 import { useForm } from "react-hook-form";
 import { CiSearch } from "react-icons/ci";
+import { IoClose } from "react-icons/io5";
 import LinkCard from "@/components/LinkCard";
 import LinkDetails from "@/components/LinkDetails";
+import Popup from "@/components/Popup";
 
 interface FilterValues {
   filter: string;
@@ -37,22 +40,10 @@ const Dashboard = () => {
     formState: { errors },
   } = useForm<FilterValues>();
 
-  const onSubmit = (data: FilterValues) => {
-    console.log(data);
-    reset();
-  };
-
-  const [data, setData] = useState<LinkData[]>([]);
-  const [success, setSuccess] = useState(false);
-
-  const [details, setDetails] = useState<JSX.Element>();
-
-  const [active, setActive] = useState<string>();
-
-  async function fetchData() {
+  const onSubmit = async (data: FilterValues) => {
     try {
       const response = await fetch(
-        "https://url-shortener-production-e495.up.railway.app/api/url_shortener/me",
+        `https://url-shortener-production-e495.up.railway.app/api/url_shortener/me?search=${data.search}`,
         {
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -61,6 +52,11 @@ const Dashboard = () => {
       );
       const responseData = await response.json();
       if (response.ok) {
+        if (responseData.data.length == 0) {
+          setFound(false);
+        } else {
+          setFound(true);
+        }
         setData(responseData.data);
         setSuccess(true);
         setActive(responseData.data[0]?.id);
@@ -74,6 +70,76 @@ const Dashboard = () => {
             is_feeds={responseData.data[0]?.is_feeds}
             id={responseData.data[0]?.id}
             is_private={responseData.data[0]?.is_private}
+            onClickEdit={HandleEdit}
+            onClickUpdate={HandleUpdate}
+            onClickDelete={HandleDelete}
+          />
+        );
+      } else {
+        console.log(responseData.message);
+        setSuccess(false);
+      }
+    } catch (error) {}
+    reset();
+  };
+
+  const [data, setData] = useState<LinkData[]>([]);
+  const [success, setSuccess] = useState(false);
+  const [details, setDetails] = useState<JSX.Element>();
+  const [active, setActive] = useState<string>();
+  const [found, setFound] = useState<boolean>();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [isDelete, setIsDelete] = useState<boolean>(false);
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  const [message, setMessage] = useState<string>("");
+  const HandleEdit = (text: string) => {
+    setIsEdit(!isEdit);
+    setIsPopUpVisible(true);
+    setMessage(text);
+  };
+  const HandleUpdate = () => {
+    setIsUpdate(!isUpdate);
+  };
+  const HandleDelete = (text: string) => {
+    setIsDelete(!isDelete);
+    setIsPopUpVisible(true);
+    setMessage(text);
+  };
+
+  async function fetchData() {
+    try {
+      const response = await fetch(
+        "https://url-shortener-production-e495.up.railway.app/api/url_shortener/me",
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const responseData = await response.json();
+      if (response.ok) {
+        if (responseData.data.length == 0) {
+          setFound(false);
+        } else {
+          setFound(true);
+        }
+        setData(responseData.data);
+        setSuccess(true);
+        setActive(responseData.data[0]?.id);
+        setDetails(
+          <LinkDetails
+            title={responseData.data[0]?.title}
+            date={responseData.data[0]?.created_at}
+            user={responseData.data[0]?.username}
+            short_url={responseData.data[0]?.short_url}
+            long_url={responseData.data[0]?.long_url}
+            is_feeds={responseData.data[0]?.is_feeds}
+            id={responseData.data[0]?.id}
+            is_private={responseData.data[0]?.is_private}
+            onClickEdit={HandleEdit}
+            onClickUpdate={HandleUpdate}
+            onClickDelete={HandleDelete}
           />
         );
       } else {
@@ -85,7 +151,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [isUpdate, isEdit, isDelete]);
 
   const showDetails = (
     id: string,
@@ -108,10 +174,20 @@ const Dashboard = () => {
         is_feeds={is_feeds}
         id={id}
         is_private={is_private}
+        onClickEdit={HandleEdit}
+        onClickUpdate={HandleUpdate}
+        onClickDelete={HandleDelete}
       />
     );
   };
 
+  const HandleOnClick = () => {
+    setActive("");
+  };
+
+  const HandleOnClose = () => {
+    setIsPopUpVisible(false);
+  };
   return (
     <section className="w-full links-w flex flex-col">
       <div className="min-h-[12rem] flex justify-between items-center px-8 box-border border-b">
@@ -141,7 +217,7 @@ const Dashboard = () => {
               <input
                 type="text"
                 className="px-3 py-[.4rem] w-full rounded-md border-2 border-indigo-300 text-sm"
-                placeholder="Tag"
+                placeholder="search"
                 {...register("search")}
               />
             </label>
@@ -181,7 +257,7 @@ const Dashboard = () => {
       </div>
       <div className="flex h-full overflow-y-clip">
         <div className="w-full flex flex-col gap-y-6 py-6 sm:w-[45%] md:w-1/3 overflow-y-auto">
-          {success ? (
+          {success && found ? (
             data.map((link) => (
               <div
                 className={`flex flex-col px-8 min-h-[8rem] gap-y-1 justify-center border-t border-b cursor-pointer ${
@@ -217,18 +293,31 @@ const Dashboard = () => {
             </div>
           )}
         </div>
-        <div className="hidden sm:static sm:w-[55%] md:w-2/3 sm:flex flex-col items-center p-8 gap-y-6 bg-indigo-50 overflow-y-auto h-full">
-          {active ? (
-            details
-          ) : (
-            <div>
-              <p className="tracking-wide text-[#041267] text-opacity-70">
-                No link selected
-              </p>
-            </div>
-          )}
+        <div
+          className={`absolute w-full h-full top-0 overflow-x-hidden sm:static sm:w-[55%] md:w-2/3 flex flex-col items-center md:p-8 bg-indigo-50 overflow-y-auto ${
+            active ? "flex" : " right-[100%]"
+          }`}
+        >
+          <div className="min-h-[4.5rem] w-full bg-[#273143] text-indigo-50 flex items-center justify-between px-6 sm:hidden">
+            <p className="uppercase font-medium tracking-wide">Link Details</p>
+            <button type="button" onClick={HandleOnClick}>
+              <IoClose size={25} />
+            </button>
+          </div>
+          <div className="w-full flex flex-col p-8 gap-y-8 md:p-0">
+            {active ? (
+              details
+            ) : (
+              <div className="w-full h-full flex items-center justify-center min-h-[5rem] bg-white">
+                <p className="tracking-wide text-[#041267] text-opacity-70">
+                  No link selected
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
     </section>
   );
 };
