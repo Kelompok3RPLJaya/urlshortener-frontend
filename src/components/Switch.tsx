@@ -31,8 +31,8 @@ const Switch = ({name, textReg, toggle, register, errors, label1, label2}: Switc
 
                         <div className={`flex flex-row items-center`}>
 
-                            {label2 ? <label htmlFor={textReg} className='text-sm font-semibold'>{label2}</label> : null }
-                            <input id={textReg} type="text" placeholder='Add custom link'
+                            {label2 ? <label htmlFor={textReg} className='text-sm font-semibold cursor-pointer'>{label2}</label> : null }
+                            <input id={textReg} type="text" placeholder={`Add ${label1}`}
                                 {...register(textReg as keyof FormValues, {
                                     required: {
                                         value: true,
