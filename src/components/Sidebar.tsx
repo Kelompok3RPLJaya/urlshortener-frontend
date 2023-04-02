@@ -8,6 +8,8 @@ import { TbSettings2 } from "react-icons/tb";
 import Header from "./Header";
 import Dashboard from "@/pages/sections/Dashboard";
 import Homepage from "@/pages/sections/Homepage";
+import Feeds from "@/pages/sections/Feeds";
+import PrivateInput from "@/pages/sections/PrivateInput";
 
 const Sidebar = () => {
   const [sidebar, showSidebar] = useState(false);
@@ -20,6 +22,7 @@ const Sidebar = () => {
   };
   const [active, setActive] = useState("dashboard");
   const [currentPage, setCurrentPage] = useState(<Dashboard />);
+
   const updateActive = (value: string, page: JSX.Element) => {
     setActive(value);
     setCurrentPage(page);
@@ -42,13 +45,13 @@ const Sidebar = () => {
       title: "Feeds",
       icon: <RxStack size={18} />,
       active: active === "feeds",
-      onClick: () => updateActive("feeds", <Dashboard />),
+      onClick: () => updateActive("feeds", <Feeds />),
     },
     {
       title: "About",
       icon: <IoMdLink size={18} />,
       active: active === "about",
-      onClick: () => updateActive("about", <Dashboard />),
+      onClick: () => updateActive("about", <PrivateInput />),
     },
     {
       title: "Setting",
