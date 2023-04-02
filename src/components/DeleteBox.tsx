@@ -5,9 +5,10 @@ import Popup from "./Popup";
 
 interface DeleteProps {
   id: string;
+  onClick: (text: string) => void;
 }
 
-const DeleteBox = ({ id }: DeleteProps) => {
+const DeleteBox = ({ id, onClick }: DeleteProps) => {
   const [message, setMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const HandleOnHide = () => {
@@ -15,7 +16,6 @@ const DeleteBox = ({ id }: DeleteProps) => {
     setIsPopUpVisible(true);
   };
   const HandleOnClick = async (data: DeleteProps) => {
-    console.log(id);
     try {
       const response = await fetch(
         `https://url-shortener-production-e495.up.railway.app/api/url_shortener/${id}`,
@@ -30,19 +30,20 @@ const DeleteBox = ({ id }: DeleteProps) => {
       const responseData = await response.json();
       if (response.ok) {
         setMessage(responseData.message);
+        onClick(responseData.message);
         console.log(responseData.message);
         setIsPopUpVisible(true);
       } else {
         setMessage(responseData.message);
+        onClick(responseData.message);
       }
     } catch (error) {}
   };
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
-    window.location.reload();
   };
   return (
-    <section className="flex flex-col absolute right-16 top-1/2 bg-white text-sm text-[#041267] shadow-md">
+    <section className="flex flex-col absolute right-5 top-[120%] bg-white text-sm text-[#041267] shadow-md">
       <button
         type="button"
         className="px-4 py-2 text-start flex items-center gap-x-2 w-[8rem] hover:bg-indigo-50"
@@ -53,11 +54,10 @@ const DeleteBox = ({ id }: DeleteProps) => {
       <button
         type="button"
         className="px-4 py-2 text-start flex items-center gap-x-2 w-[8rem] text-red-600 hover:bg-indigo-50"
-        onClick={() => HandleOnClick({ id })}
+        onClick={() => HandleOnClick({ id, onClick })}
       >
         <RxTrash /> Delete
       </button>
-      {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
     </section>
   );
 };

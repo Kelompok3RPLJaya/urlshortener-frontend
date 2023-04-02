@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { MdEdit } from "react-icons/md";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
@@ -6,6 +6,8 @@ import { MdContentCopy } from "react-icons/md";
 import { BsArrowReturnRight } from "react-icons/bs";
 import { BsQrCode } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
+import { BiCalendarAlt } from "react-icons/bi";
+import { FiTag } from "react-icons/fi";
 import EditBar from "./EditBar";
 import DeleteBox from "./DeleteBox";
 import Popup from "./Popup";
@@ -20,6 +22,9 @@ interface linkProps {
   is_feeds: boolean;
   id: string;
   is_private: boolean;
+  onClickEdit: (text: string) => void;
+  onClickUpdate: () => void;
+  onClickDelete: (text: string) => void;
 }
 
 const LinkDetails = ({
@@ -31,7 +36,29 @@ const LinkDetails = ({
   is_feeds,
   id,
   is_private,
+  onClickEdit,
+  onClickUpdate,
+  onClickDelete,
 }: linkProps) => {
+  const [access, setAccess] = useState<string>();
+  useEffect(() => {
+    if (is_private) {
+      setAccess("public");
+    } else {
+      setAccess("private");
+    }
+  }, [id]);
+
+  const [message, setMessage] = useState("");
+  const hanldeOnEdit = (text: string) => {
+    setMessage(text);
+    onClickEdit(text);
+  };
+  const hanldeOnDelete = (text: string) => {
+    setMessage(text);
+    onClickDelete(text);
+  };
+
   const [isEdit, setIsEdit] = useState(false);
   const HandleOnClick = () => {
     setIsEdit(!isEdit);
@@ -57,14 +84,17 @@ const LinkDetails = ({
   return (
     <>
       <div className={"w-full flex flex-col gap-y-6 h-full"}>
-        <div className="w-full min-h-[9rem] flex justify-center lg:items-center flex-col lg:flex-row gap-y-2 shadow-md py-10 px-8 box-border bg-white relative">
-          <div className="w-full flex flex-col gap-y-2 lg:gap-y-4">
+        <div className="w-full min-h-[9rem] flex justify-center lg:items-center flex-col lg:flex-row gap-y-4 shadow-md py-10 px-8 box-border bg-white">
+          <div className="w-full flex flex-col gap-y-4">
             <h3 className="text-xl font-semibold text-[#041267]">{title}</h3>
-            <p className="text-[.9rem] text-[#041267] text-opacity-80">
-              {date} by {user}
-            </p>
+            <div className="flex items-center gap-x-3">
+              <BiCalendarAlt />
+              <p className="text-[.9rem] text-[#041267] text-opacity-80">
+                {date} by {user}
+              </p>
+            </div>
           </div>
-          <div className="flex items-center justify-start gap-x-2">
+          <div className="flex items-center justify-start gap-x-2 relative">
             <button
               className="px-4 py-2 flex items-center gap-x-2 bg-indigo-50 rounded-md hover:bg-indigo-200 transition-all duration-100"
               onClick={HandleOnClick}
@@ -78,16 +108,25 @@ const LinkDetails = ({
             >
               <HiOutlineDotsHorizontal />
             </button>
+            {isDelete && (
+              <DeleteBox
+                id={id}
+                onClick={(message) => {
+                  onClickDelete(message);
+                  setIsDelete(false);
+                }}
+              />
+            )}
           </div>
         </div>
-        {isDelete && <DeleteBox id={id} />}
-        <div className="h-full shadow-md p-8 flex flex-col gap-y-8 bg-white">
-          <div className="flex flex-col gap-y-3">
-            <div className="w-full flex flex-col lg:flex-row gap-y-2 justify-between">
+
+        <div className="h-full shadow-md p-8 flex flex-col gap-y-9 bg-white">
+          <div className="flex flex-col gap-y-4">
+            <div className="w-full flex flex-col lg:flex-row gap-y-4 justify-between">
               <h3 className="text-2xl font-bold tracking-wide text-indigo-400">
                 {short_url}
               </h3>
-              <div className="flex items-center justify-start gap-x-2">
+              <div className="flex items-center justify-start gap-x-2 relative">
                 <button
                   type="button"
                   className="px-4 py-2 flex items-center gap-x-2 bg-indigo-50 rounded-md hover:bg-indigo-200 transition-all duration-100"
@@ -102,10 +141,17 @@ const LinkDetails = ({
                 >
                   <HiOutlineDotsHorizontal />
                 </button>
+                {isUpdate && (
+                  <UpdateBox
+                    id={id}
+                    is_private={is_private}
+                    onClick={onClickUpdate}
+                  />
+                )}
               </div>
             </div>
-            <div className="flex items-center gap-x-4">
-              <BsArrowReturnRight />{" "}
+            <div className="flex items-center gap-x-4 overflow-hidden">
+              <BsArrowReturnRight />
               <p className="text-sm text-[#041267] text-opacity-60">
                 {long_url}
               </p>
@@ -123,8 +169,11 @@ const LinkDetails = ({
               </Link>
             </div>
           </div>
+          <div className="flex items-center gap-x-2 text-[#041267] text-opacity-70">
+            <FiTag />
+            {access}
+          </div>
         </div>
-        {isUpdate && <UpdateBox id={id} is_private={is_private} />}
         {isCopied && isPopUpVisible && (
           <Popup message="Copied!" onClose={HandleOnClose} />
         )}
@@ -147,6 +196,7 @@ const LinkDetails = ({
           short_url={short_url}
           is_feeds={is_feeds}
           id={id}
+          onClick={onClickEdit}
         />
       </section>
     </>

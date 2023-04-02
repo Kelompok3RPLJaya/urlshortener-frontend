@@ -10,6 +10,7 @@ import Dashboard from "@/pages/sections/Dashboard";
 import Homepage from "@/pages/sections/Homepage";
 import Feeds from "@/pages/sections/Feeds";
 import PrivateInput from "@/pages/sections/PrivateInput";
+import SettingNav from "./SettingNav";
 
 const Sidebar = () => {
   const [sidebar, showSidebar] = useState(false);
@@ -33,31 +34,46 @@ const Sidebar = () => {
       title: "Home",
       icon: <RiHomeLine size={18} />,
       active: active === "home",
-      onClick: () => updateActive("home", <Homepage />),
+      onClick: () => {
+        updateActive("home", <Homepage />);
+        showSidebar(false);
+      },
     },
     {
       title: "Dashboard",
       icon: <MdOutlineSpaceDashboard size={18} />,
       active: active === "dashboard",
-      onClick: () => updateActive("dashboard", <Dashboard />),
+      onClick: () => {
+        updateActive("dashboard", <Dashboard />);
+        showSidebar(false);
+      },
     },
     {
       title: "Feeds",
       icon: <RxStack size={18} />,
       active: active === "feeds",
-      onClick: () => updateActive("feeds", <Feeds />),
+      onClick: () => {
+        updateActive("feeds", <Feeds />);
+        showSidebar(false);
+      },
     },
     {
       title: "About",
       icon: <IoMdLink size={18} />,
       active: active === "about",
-      onClick: () => updateActive("about", <PrivateInput />),
+      onClick: () => {
+        updateActive("about", <PrivateInput />);
+        showSidebar(false);
+      },
     },
     {
       title: "Setting",
       icon: <TbSettings2 size={18} />,
       active: active === "setting",
-      onClick: () => updateActive("setting", <Dashboard />),
+      onClick: () => {
+        updateActive("setting", <SettingNav />);
+        showSidebar(false);
+      },
     },
   ];
 

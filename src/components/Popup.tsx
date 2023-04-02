@@ -6,12 +6,12 @@ interface Props {
 }
 
 const Popup: React.FC<Props> = ({ message, onClose }) => {
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     onClose();
-  //   }, 3000);
-  //   return () => clearTimeout(timer);
-  // }, [onClose]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
 
   return (
     <div className="fixed top-0 left-0 w-full h-full z-50 flex justify-center items-center bg-gray-500 bg-opacity-50">

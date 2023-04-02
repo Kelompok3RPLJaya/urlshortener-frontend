@@ -9,8 +9,42 @@ interface HeaderProps {
   currentPath: string;
 }
 
+interface userData {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+  DeletedAt: any | undefined;
+}
+
 const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
   const [isToken, setIsToken] = useState(false);
+
+  const [data, setData] = useState<userData>();
+  const [message, setMessage] = useState<string>();
+  async function fetchData() {
+    try {
+      const response = await fetch(
+        "https://url-shortener-production-e495.up.railway.app/api/user/me",
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const responseData = await response.json();
+      setMessage(responseData);
+      if (response.ok) {
+        setData(responseData.data);
+        console.log(responseData);
+      } else {
+        console.log(responseData);
+      }
+    } catch (error) {}
+  }
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,18 +53,17 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
     } else {
       setIsToken(false);
     }
+    fetchData();
   }, []);
 
   return (
     <section className="min-h-[4.5rem] w-full bg-indigo-50 flex justify-between px-[1.6rem] box-border text-[#041267]">
       <div className="flex items-center gap-x-8">
-        
         {currentPath == "/User" && (
           <button type="button" onClick={HandleOnClick}>
             <HiOutlineMenu size={30} />
           </button>
         )}
-
         <Link href="/" className="flex items-center gap-x-2 text-lg">
           <SiLinkfire size={28} />
           Shortify
@@ -48,11 +81,11 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
               </Link>
             )}
             <Link
-              href="/Setting"
+              href="/User"
               className="flex items-center gap-x-2 bg-[#041267] px-4 py-2 rounded-3xl text-sm text-gray-100"
             >
               <AiOutlineUser />
-              Profile
+              {data?.name}
             </Link>
           </div>
         )}
@@ -64,7 +97,6 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
             >
               Register
             </Link>
-            
             <Link
               href="/Login"
               className="px-4 py-2 text-sm bg-[#041267] text-gray-100 rounded-3xl"
