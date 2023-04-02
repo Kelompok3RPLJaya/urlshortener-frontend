@@ -28,6 +28,16 @@
   background: linear-gradient(180deg, #e9f0f8 0%, #ced9eb 100%);
 }
 
+.confirm {
+  /* From https://css.glass */
+  background: rgba(238, 242, 255, 0.46);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(238, 242, 255, 0.74);
+}
+
 @media (min-width: 768px) {
   .links-w {
     width: calc(100vw - 5rem);

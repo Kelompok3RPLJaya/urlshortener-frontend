@@ -1,6 +1,7 @@
 import Popup from "@/components/Popup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
 interface userData {
   id: string;
@@ -20,6 +21,7 @@ interface newUserData {
 }
 
 const Profile = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -36,7 +38,7 @@ const Profile = () => {
     console.log(data);
     try {
       const response = await fetch(
-        "https://url-shortener-production-e495.up.railway.app/api/user/edit",
+        "https://urlshortener-backend-production.up.railway.app/api/user/edit",
         {
           method: "POST",
           headers: {
@@ -64,7 +66,7 @@ const Profile = () => {
   async function fetchData() {
     try {
       const response = await fetch(
-        "https://url-shortener-production-e495.up.railway.app/api/user/me",
+        "https://urlshortener-backend-production.up.railway.app/api/user/me",
         {
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -89,6 +91,11 @@ const Profile = () => {
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
     window.location.reload();
+  };
+
+  const HandleOnClick = () => {
+    window.localStorage.removeItem("token");
+    router.push("/");
   };
 
   return (
@@ -155,6 +162,15 @@ const Profile = () => {
               className="px-4 py-3 font-medium border-2 border-indigo-300 w-[12rem] text-[#041267] rounded-md text-sm"
             >
               Update preferences
+            </button>
+          </div>
+          <div className="w-full flex">
+            <button
+              type="button"
+              onClick={HandleOnClick}
+              className="px-4 py-2 rounded-md bg-[#041267] text-indigo-50 text-sm"
+            >
+              Log out
             </button>
           </div>
         </div>

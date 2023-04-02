@@ -37,7 +37,7 @@ const Register = () => {
   const onSubmit = async (data: FormValues) => {
     try {
       const response = await fetch(
-        "https://url-shortener-production-e495.up.railway.app/api/user",
+        "https://urlshortener-backend-production.up.railway.app/api/user",
         {
           method: "POST",
           headers: {
