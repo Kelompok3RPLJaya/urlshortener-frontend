@@ -1,4 +1,3 @@
-import HomeLinkCard from "@/components/FeedsLinkCard";
 import React from "react";
 import Hero from "../Hero";
 
