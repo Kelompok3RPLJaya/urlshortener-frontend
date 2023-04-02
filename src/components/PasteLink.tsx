@@ -6,13 +6,13 @@ import Switch from './Switch';
 import Popup from './Popup';
 
 export interface FormValues {
-  long_url: string;
-  is_custom: boolean;
-  is_private: boolean;
-  short_url: string;
-  password: string;
-  is_feeds: boolean;
-  title: string;
+    long_url: string,
+    is_custom: boolean,
+    is_private: boolean,
+    short_url: string,
+    password: string,
+    is_feeds: boolean,
+    title: string;
 }
 
 const PasteLink = () => {
@@ -28,18 +28,18 @@ const PasteLink = () => {
         mode: "onChange", defaultValues: {}
     });
 
-  const [randomStr, setRandomStr] = useState<string>("");
+    const [randomStr, setRandomStr] = useState<string>("");
 
-  const [isToken, setIsToken] = useState(false);
-  const [token, setToken] = useState<string>();
+    const [isToken, setIsToken] = useState(false);
+    const [token, setToken] = useState<string>();
 
-  const [OutputLink, setOutputLink] = useState<string>("");
+    const [OutputLink, setOutputLink] = useState<string>("");
 
-  const [customIsToggled, setCustomIsToggled] = useState(false);
-  const [privateIsToggled, setPrivateIsToggled] = useState(false);
-  const [feedsIsToggled, setFeedsIsToggled] = useState(false);
+    const [customIsToggled, setCustomIsToggled] = useState(false);
+    const [privateIsToggled, setPrivateIsToggled] = useState(false);
+    const [feedsIsToggled, setFeedsIsToggled] = useState(false);
 
-  const [isShortened, setIsShortened] = useState(false);
+    const [isShortened, setIsShortened] = useState(false);
 
     const [isCopied, setIsCopied] = useState(false);
     const [isPopUpVisible, setIsPopUpVisible] = useState(false);
@@ -56,15 +56,15 @@ const PasteLink = () => {
         setRandomStr(result);
     }
 
-  useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      setIsToken(true);
-      setToken(token);
-    } else {
-      setIsToken(false);
-      setValue("title", "null");
-    }
+    useEffect(() => {
+        const token = window.localStorage.getItem("token");
+        if (token) {
+            setIsToken(true);
+            setToken(token);
+        } else {
+            setIsToken(false);
+            setValue("title", "null");
+        }
 
         generateRandomString(10);
 
@@ -78,22 +78,15 @@ const PasteLink = () => {
             setValue("short_url", randomStr);
         }
         console.log(isCopied);
-    },[customIsToggled, randomStr]);
-    
-  useEffect(() => {
-    if (customIsToggled) {
-      setValue("short_url", "");
-    } else {
-      setValue("short_url", randomStr);
-    }
-  }, [customIsToggled, randomStr]);
 
-  register("long_url", {
-    required: {
-      value: true,
-      message: "Link is required!",
-    },
-  });
+    }, [customIsToggled, randomStr])
+
+    register('long_url', {
+        required: {
+            value: true,
+            message: "Link is required!"
+        }
+    });
 
     register('title', {
         required: {
@@ -158,16 +151,16 @@ const PasteLink = () => {
             console.error(error);
         }
 
-    reset();
-    generateRandomString(10);
+        reset();
+        generateRandomString(10);
 
         if (!isToken)
             setValue("title", "null");
 
-    setCustomIsToggled(false);
-    setPrivateIsToggled(false);
-    setFeedsIsToggled(false);
-  };
+        setCustomIsToggled(false);
+        setPrivateIsToggled(false);
+        setFeedsIsToggled(false);
+    };
 
     return (
         <>
@@ -185,9 +178,7 @@ const PasteLink = () => {
 
                         </div>
 
-            <p className="text-sm text-red-500 px-5 font-medium">
-              {errors.long_url?.message}
-            </p>
+                        <p className='text-sm text-red-500 px-5 font-medium'>{errors.long_url?.message}</p>
 
                         <div className='flex flex-col sm:flex-row gap-2 mx-5'>
 
