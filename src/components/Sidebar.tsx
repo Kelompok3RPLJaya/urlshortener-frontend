@@ -9,8 +9,8 @@ import Header from "./Header";
 import Dashboard from "@/pages/sections/Dashboard";
 import Homepage from "@/pages/sections/Homepage";
 import Feeds from "@/pages/sections/Feeds";
-import PrivateInput from "@/pages/sections/PrivateInput";
 import SettingNav from "./SettingNav";
+import FAQ from "@/pages/sections/FAQ";
 
 const Sidebar = () => {
   const [sidebar, showSidebar] = useState(false);
@@ -62,7 +62,7 @@ const Sidebar = () => {
       icon: <IoMdLink size={18} />,
       active: active === "about",
       onClick: () => {
-        updateActive("about", <PrivateInput />);
+        updateActive("faq", <FAQ />);
         showSidebar(false);
       },
     },
