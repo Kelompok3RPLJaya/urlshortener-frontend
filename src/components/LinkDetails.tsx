@@ -43,9 +43,9 @@ const LinkDetails = ({
   const [access, setAccess] = useState<string>();
   useEffect(() => {
     if (is_private) {
-      setAccess("public");
-    } else {
       setAccess("private");
+    } else {
+      setAccess("public");
     }
   }, [id]);
 

@@ -66,7 +66,7 @@ const Register = () => {
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
     if (responseMessage == "Berhasil Menambahkan User") {
-      router.push("/");
+      router.push("/Login");
     }
   };
 

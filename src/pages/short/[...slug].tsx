@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import Popup from "@/components/Popup";
 
 interface accessProp {
   password: string;
@@ -19,6 +20,7 @@ export default function ShortUrl() {
   } = useForm<accessProp>();
   const [message, setMessage] = useState<string>("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
 
   const onSubmit = async (data: accessProp) => {
     try {
@@ -38,7 +40,9 @@ export default function ShortUrl() {
         window.location.href = responseData.data.long_url;
         console.log(data);
       } else {
-        console.log(responseData);
+        console.log(responseData.message);
+        setMessage(responseData.errors);
+        setIsPopUpVisible(true);
       }
     } catch (error) {}
     reset();
@@ -85,7 +89,10 @@ export default function ShortUrl() {
       </section>
     );
   }
-  console.log(isPrivate);
+
+  const HandleOnClose = () => {
+    setIsPopUpVisible(false);
+  };
 
   return (
     <section className="min-h-screen w-full flex justify-center items-center text-[#041267]">
@@ -133,6 +140,7 @@ export default function ShortUrl() {
           </div>
         </div>
       )}
+      {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
     </section>
   );
 }
