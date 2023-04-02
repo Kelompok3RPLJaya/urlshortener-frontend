@@ -28,7 +28,7 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
   async function fetchData() {
     try {
       const response = await fetch(
-        "https://url-shortener-production-e495.up.railway.app/api/user/me",
+        "https://urlshortener-backend-production.up.railway.app/api/user/me",
         {
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,

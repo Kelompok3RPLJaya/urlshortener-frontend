@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { TbLayoutList } from "react-icons/tb";
 
@@ -9,6 +10,7 @@ interface linkProps {
 }
 
 const LinkCard = ({ date, title, short_url }: linkProps) => {
+  const router = useRouter();
   return (
     <>
       <p className="text-[.85rem] text-[#4e558e]">{date}</p>

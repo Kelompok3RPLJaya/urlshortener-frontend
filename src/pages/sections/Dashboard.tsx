@@ -7,6 +7,7 @@ import { TbPlus } from "react-icons/tb";
 import { useForm } from "react-hook-form";
 import { CiSearch } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
+import { BsArrowDown } from "react-icons/bs";
 import LinkCard from "@/components/LinkCard";
 import LinkDetails from "@/components/LinkDetails";
 import Popup from "@/components/Popup";
@@ -43,7 +44,7 @@ const Dashboard = () => {
   const onSubmit = async (data: FilterValues) => {
     try {
       const response = await fetch(
-        `https://url-shortener-production-e495.up.railway.app/api/url_shortener/me?search=${data.search}`,
+        `https://urlshortener-backend-production.up.railway.app/api/url_shortener/me?search=${data.search}`,
         {
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -87,12 +88,17 @@ const Dashboard = () => {
   const [success, setSuccess] = useState(false);
   const [details, setDetails] = useState<JSX.Element>();
   const [active, setActive] = useState<string>();
-  const [found, setFound] = useState<boolean>();
+  const [found, setFound] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const [message, setMessage] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(4);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalData, setTotalData] = useState<number>();
+  const [max, setMax] = useState(false);
   const HandleEdit = (text: string) => {
     setIsEdit(!isEdit);
     setIsPopUpVisible(true);
@@ -110,7 +116,7 @@ const Dashboard = () => {
   async function fetchData() {
     try {
       const response = await fetch(
-        "https://url-shortener-production-e495.up.railway.app/api/url_shortener/me",
+        `https://urlshortener-backend-production.up.railway.app/api/url_shortener/me?page=${page}&per_page=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -124,19 +130,28 @@ const Dashboard = () => {
         } else {
           setFound(true);
         }
-        setData(responseData.data);
+        if (page == 1) {
+          setData(responseData.data.data_per_page);
+        } else {
+          setData((prevData) => [
+            ...prevData,
+            ...responseData.data.data_per_page,
+          ]);
+        }
         setSuccess(true);
-        setActive(responseData.data[0]?.id);
+        setTotalPages(responseData.data.meta.max_page);
+        setTotalData(responseData.data.meta.total_data);
+        setActive(responseData.data.data_per_page[0]?.id);
         setDetails(
           <LinkDetails
-            title={responseData.data[0]?.title}
-            date={responseData.data[0]?.created_at}
-            user={responseData.data[0]?.username}
-            short_url={responseData.data[0]?.short_url}
-            long_url={responseData.data[0]?.long_url}
-            is_feeds={responseData.data[0]?.is_feeds}
-            id={responseData.data[0]?.id}
-            is_private={responseData.data[0]?.is_private}
+            title={responseData.data.data_per_page[0]?.title}
+            date={responseData.data.data_per_page[0]?.created_at}
+            user={responseData.data.data_per_page[0]?.username}
+            short_url={responseData.data.data_per_page[0]?.short_url}
+            long_url={responseData.data.data_per_page[0]?.long_url}
+            is_feeds={responseData.data.data_per_page[0]?.is_feeds}
+            id={responseData.data.data_per_page[0]?.id}
+            is_private={responseData.data.data_per_page[0]?.is_private}
             onClickEdit={HandleEdit}
             onClickUpdate={HandleUpdate}
             onClickDelete={HandleDelete}
@@ -151,7 +166,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, [isUpdate, isEdit, isDelete]);
+  }, [isUpdate, isEdit, isDelete, page, perPage]);
+
+  const nextPage = () => {
+    if (page == totalPages) {
+      setMax(true);
+    } else {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   const showDetails = (
     id: string,
@@ -255,7 +278,7 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-      <div className="flex h-full overflow-y-clip">
+      <div className="flex h-full overflow-y-clip relative">
         <div className="w-full flex flex-col gap-y-6 py-6 sm:w-[45%] md:w-1/3 overflow-y-auto">
           {success && found ? (
             data.map((link) => (
@@ -290,6 +313,17 @@ const Dashboard = () => {
               <p className="tracking-wide text-[#041267] text-opacity-70">
                 Can&rsquo;t find any link for now
               </p>
+            </div>
+          )}
+          {max ? null : (
+            <div className="w-full flex justify-center items-center">
+              <button
+                type="button"
+                onClick={nextPage}
+                className="p-2 rounded-full shadow-md"
+              >
+                <BsArrowDown size={25} />
+              </button>
             </div>
           )}
         </div>

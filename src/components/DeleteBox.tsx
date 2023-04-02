@@ -18,7 +18,7 @@ const DeleteBox = ({ id, onClick }: DeleteProps) => {
   const HandleOnClick = async (data: DeleteProps) => {
     try {
       const response = await fetch(
-        `https://url-shortener-production-e495.up.railway.app/api/url_shortener/${id}`,
+        `https://urlshortener-backend-production.up.railway.app/api/url_shortener/${id}`,
         {
           method: "DELETE",
           headers: {
