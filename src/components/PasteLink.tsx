@@ -76,7 +76,6 @@ const PasteLink = () => {
     } else {
       setValue("short_url", randomStr);
     }
-    console.log(isCopied);
   }, [customIsToggled, randomStr]);
 
   register("long_url", {
@@ -104,7 +103,7 @@ const PasteLink = () => {
 
   const HandleOnCopy = () => {
     setIsPopUpVisible(true);
-    navigator.clipboard.writeText(`poppins.in/${OutputLink}`);
+    navigator.clipboard.writeText(`poplink.site/short/${OutputLink}`);
     setIsCopied(true);
   };
 
@@ -203,7 +202,7 @@ const PasteLink = () => {
                   register={register}
                   errors={errors}
                   label1="Custom Link"
-                  label2="Poppins.in/"
+                  label2="poplink.site/short/"
                 />
               </div>
 
@@ -264,7 +263,7 @@ const PasteLink = () => {
             <label
               htmlFor="copy"
               className="text-black font-semi-bold cursor-pointer truncate"
-            >{`poppins.in/${OutputLink}`}</label>
+            >{`poplink.site/short/${OutputLink}`}</label>
             <button id="copy" type="button" onClick={HandleOnCopy}>
               <MdContentCopy
                 style={{ color: "#766FF9" }}
