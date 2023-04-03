@@ -10,9 +10,9 @@ const Hero = () => {
 
                 <div className='flex flex-col w-2/3 2xl:w-1/2 items-center'>
                     <div className='flex flex-col sm:flex-row sm:gap-2 sm:py-10'>
-                        <div className='font-bold text-5xl text-[#0E9EE8] drop-shadow-lg'>Poppins</div>
-                        <div className='font-bold text-5xl text-[#041267] drop-shadow-lg'>Poppins</div>
-                        <div className='font-bold text-5xl text-[#5039E5] drop-shadow-lg'>Poppins</div>
+                        <div className='font-bold text-5xl text-[#0E9EE8] drop-shadow-lg'>PopLink</div>
+                        <div className='font-bold text-5xl text-[#041267] drop-shadow-lg'>PopLink</div>
+                        <div className='font-bold text-5xl text-[#5039E5] drop-shadow-lg'>PopLink</div>
                     </div>
                 </div>
 
