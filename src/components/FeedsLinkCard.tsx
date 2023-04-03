@@ -32,7 +32,6 @@ const FeedsLinkCard = ({ user, title, time, url }: FeedsProp) => {
       >
         <h1 className="pt-1 pl-2 w-full border-b">Follow</h1>
         <h1 className="pt-1 pl-2 w-full border-b">Unfollow</h1>
-        <h1 className="pt-1 pl-2 w-full ">Hide Yours</h1>
       </div>
     </>
   );
