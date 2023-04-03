@@ -52,11 +52,11 @@ const Profile = () => {
       if (response.ok) {
         setResponseMessage(responseData.message);
         setIsPopUpVisible(true);
-        console.log(responseData);
+        // console.log(responseData);
       } else {
         setResponseMessage(responseData.message);
         setIsPopUpVisible(true);
-        console.log(responseData);
+        // console.log(responseData);
       }
     } catch (error) {}
     // console.log(data);

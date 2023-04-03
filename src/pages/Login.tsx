@@ -52,7 +52,7 @@ const Login = () => {
         setIsPopUpVisible(true);
         console.log(data);
       } else {
-        setResponseMessage(responseData.message);
+        setResponseMessage(responseData.errors);
         setIsPopUpVisible(true);
         console.log(responseData);
       }
@@ -127,7 +127,7 @@ const Login = () => {
         </div>
         <div>
           <p className="text-center md:text-sm text-[#041267] text-opacity-80">
-            already have an account?{" "}
+            don&rsquo;t have an account yet?{" "}
             <Link href="/Register" className="text-[#766FF9]">
               Sign up here
             </Link>
