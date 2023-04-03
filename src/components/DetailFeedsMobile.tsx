@@ -9,7 +9,7 @@ interface Detailprops {
 
 const DetailFeedsMobile = ({ title, time, user, url }: Detailprops) => {
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(`poplink.site/short/` + url);
+    navigator.clipboard.writeText(`poplink.site/` + url);
   };
 
   return (
@@ -49,7 +49,7 @@ const DetailFeedsMobile = ({ title, time, user, url }: Detailprops) => {
             >
               Copy!
             </button>
-            <h1 className="overflow-hidden">poplink.site/short/{url}</h1>
+            <h1 className="overflow-hidden">poplink.site/{url}</h1>
           </div>
         </div>
       </div>
