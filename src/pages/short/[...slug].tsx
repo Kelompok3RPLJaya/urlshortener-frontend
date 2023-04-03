@@ -10,7 +10,7 @@ interface accessProp {
 export default function ShortUrl() {
   const router = useRouter();
   const { slug } = router.query;
-  const short_url = slug?.[0]; // get the first element of the slug array
+  const short_url = slug?.[0];
 
   const {
     register,
@@ -37,7 +37,9 @@ export default function ShortUrl() {
       const responseData = await response.json();
       console.log(data);
       if (response.ok) {
-        window.location.href = responseData.data.long_url;
+        setTimeout(() => {
+          window.location.href = responseData.data.long_url;
+        }, 500);
         console.log(data);
       } else {
         console.log(responseData.message);
@@ -62,11 +64,16 @@ export default function ShortUrl() {
       console.log(responseData);
       if (response.ok) {
         if (responseData.data.is_private == false) {
-          window.location.href = responseData.data.long_url;
+          setTimeout(() => {
+            window.location.href = responseData.data.long_url;
+          }, 1500);
         }
       } else {
         if (responseData.data.is_private == true) {
-          setIsPrivate(true);
+          setTimeout(() => {
+            setIsPrivate(true);
+          }, 1500);
+
           console.log("masuk private");
         }
         setMessage(responseData.message);

@@ -7,6 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 interface HeaderProps {
   HandleOnClick: () => void;
   currentPath: string;
+  onClick: () => void;
 }
 
 interface userData {
@@ -20,7 +21,7 @@ interface userData {
   DeletedAt: any | undefined;
 }
 
-const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
+const Header = ({ HandleOnClick, currentPath, onClick }: HeaderProps) => {
   const [isToken, setIsToken] = useState(false);
 
   const [data, setData] = useState<userData>();
@@ -39,9 +40,9 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
       setMessage(responseData);
       if (response.ok) {
         setData(responseData.data);
-        console.log(responseData);
+        // console.log(responseData);
       } else {
-        console.log(responseData);
+        // console.log(responseData);
       }
     } catch (error) {}
   }
@@ -66,7 +67,7 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
         )}
         <Link href="/" className="flex items-center gap-x-2 text-lg">
           <SiLinkfire size={28} />
-          Shortify
+          Poplink
         </Link>
       </div>
       <div className="flex justify-center items-center gap-x-4">
@@ -80,13 +81,14 @@ const Header = ({ HandleOnClick, currentPath }: HeaderProps) => {
                 Dashboard
               </Link>
             )}
-            <Link
-              href="/User"
+            <button
+              type="button"
+              onClick={onClick}
               className="flex items-center gap-x-2 bg-[#041267] px-4 py-2 rounded-3xl text-sm text-gray-100"
             >
               <AiOutlineUser />
               {data?.name}
-            </Link>
+            </button>
           </div>
         )}
         {!isToken && (

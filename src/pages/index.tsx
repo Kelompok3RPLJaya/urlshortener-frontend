@@ -18,9 +18,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-          <Header HandleOnClick={()=>{}} currentPath="" />
-          <Hero/>
-          {/* <Link
+        <Header HandleOnClick={() => {}} currentPath="" onClick={() => {}} />
+        <Hero />
+        {/* <Link
             href="/Register"
             className="px-6 py-3 bg-indigo-400 text-gray-100 rounded-3xl"
           >

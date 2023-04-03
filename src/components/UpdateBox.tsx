@@ -7,7 +7,7 @@ import Popup from "./Popup";
 interface updateProp {
   id: string;
   is_private: boolean;
-  onClick: () => void;
+  onClick: (message: string) => void;
 }
 
 const UpdateBox = ({ id, is_private, onClick }: updateProp) => {
@@ -36,6 +36,7 @@ const UpdateBox = ({ id, is_private, onClick }: updateProp) => {
   const [message, setMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const onSubmit = async (data: updateFrom) => {
+    console.log(data);
     try {
       const response = await fetch(
         `https://urlshortener-backend-production.up.railway.app/api/url_shortener/private/${id}`,
@@ -49,13 +50,14 @@ const UpdateBox = ({ id, is_private, onClick }: updateProp) => {
         }
       );
       const responseData = await response.json();
-      onClick();
       if (response.ok) {
         setMessage(responseData.message);
+        onClick(responseData.message);
         console.log(responseData.message);
         setIsPopUpVisible(true);
       } else {
         setMessage(responseData.message);
+        onClick(responseData.message);
         console.log(responseData);
       }
     } catch (error) {}
@@ -95,7 +97,7 @@ const UpdateBox = ({ id, is_private, onClick }: updateProp) => {
           </button>
         </form>
       </section>
-      {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
+      {/* {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />} */}
     </>
   );
 };

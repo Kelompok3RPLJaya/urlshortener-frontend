@@ -23,7 +23,7 @@ interface linkProps {
   id: string;
   is_private: boolean;
   onClickEdit: (text: string) => void;
-  onClickUpdate: () => void;
+  onClickUpdate: (text: string) => void;
   onClickDelete: (text: string) => void;
 }
 
@@ -58,6 +58,10 @@ const LinkDetails = ({
     setMessage(text);
     onClickDelete(text);
   };
+  const HandleOnUpdates = (text: string) => {
+    setMessage(text);
+    onClickUpdate(text);
+  };
 
   const [isEdit, setIsEdit] = useState(false);
   const HandleOnClick = () => {
@@ -74,7 +78,7 @@ const LinkDetails = ({
   const [isCopied, setIsCopied] = useState(false);
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(short_url);
+    navigator.clipboard.writeText(`poplink.site/short/` + short_url);
     setIsCopied(true);
     setIsPopUpVisible(true);
   };
@@ -84,7 +88,7 @@ const LinkDetails = ({
   return (
     <>
       <div className={"w-full flex flex-col gap-y-6 h-full"}>
-        <div className="w-full min-h-[9rem] flex justify-center lg:items-center flex-col lg:flex-row gap-y-4 shadow-md py-10 px-8 box-border bg-white">
+        <div className="w-full h-fit flex justify-center lg:items-center flex-col lg:flex-row gap-y-4 shadow-md py-8 px-8 box-border bg-white">
           <div className="w-full flex flex-col gap-y-4">
             <h3 className="text-xl font-semibold text-[#041267]">{title}</h3>
             <div className="flex items-center gap-x-3">
@@ -124,6 +128,7 @@ const LinkDetails = ({
           <div className="flex flex-col gap-y-4">
             <div className="w-full flex flex-col lg:flex-row gap-y-4 justify-between">
               <h3 className="text-2xl font-bold tracking-wide text-indigo-400">
+                <span>poplink.site/short/</span>
                 {short_url}
               </h3>
               <div className="flex items-center justify-start gap-x-2 relative">

@@ -29,6 +29,11 @@ const Sidebar = () => {
     setCurrentPage(page);
   };
 
+  const onClick = () => {
+    updateActive("setting", <SettingNav />);
+    showSidebar(false);
+  };
+
   const links = [
     {
       title: "Home",
@@ -79,7 +84,11 @@ const Sidebar = () => {
 
   return (
     <>
-      <Header HandleOnClick={HandleOnClick} currentPath={`/User`} />
+      <Header
+        HandleOnClick={HandleOnClick}
+        currentPath={`/User`}
+        onClick={onClick}
+      />
       <div className="flex landing-h">
         <section
           className={`bg-indigo-50 landing-h absolute z-10 md:static ${
