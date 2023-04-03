@@ -20,7 +20,6 @@ const PasteLink = () => {
     register,
     handleSubmit,
     reset,
-    getValues,
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
@@ -103,11 +102,12 @@ const PasteLink = () => {
 
   const HandleOnCopy = () => {
     setIsPopUpVisible(true);
-    navigator.clipboard.writeText(`poplink.site/short/${OutputLink}`);
+    navigator.clipboard.writeText(`${OutputLink}`);
     setIsCopied(true);
   };
 
   const onSubmit = async (data: FormValues) => {
+    data.short_url = `poplink.site/short/` + data.short_url;
     try {
       var response;
       if (isToken) {
@@ -138,7 +138,7 @@ const PasteLink = () => {
       const responseData = await response.json();
       if (response.ok) {
         console.log(data);
-        setOutputLink(getValues("short_url"));
+        setOutputLink(data.short_url);
         setIsShortened(!isShortened);
       } else {
         console.log(responseData);
@@ -263,7 +263,7 @@ const PasteLink = () => {
             <label
               htmlFor="copy"
               className="text-black font-semi-bold cursor-pointer truncate"
-            >{`poplink.site/short/${OutputLink}`}</label>
+            >{`${OutputLink}`}</label>
             <button id="copy" type="button" onClick={HandleOnCopy}>
               <MdContentCopy
                 style={{ color: "#766FF9" }}
