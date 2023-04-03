@@ -41,6 +41,7 @@ const PasteLink = () => {
   const [isShortened, setIsShortened] = useState(false);
 
   const [isCopied, setIsCopied] = useState(false);
+  const [isExist, setIsExist] = useState(false);
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
 
   function generateRandomString(length: number) {
@@ -98,16 +99,16 @@ const PasteLink = () => {
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
     setIsCopied(false);
+    setIsExist(false);
   };
 
   const HandleOnCopy = () => {
     setIsPopUpVisible(true);
-    navigator.clipboard.writeText(`${OutputLink}`);
+    navigator.clipboard.writeText(`poplink.site/short/${OutputLink}`);
     setIsCopied(true);
   };
 
   const onSubmit = async (data: FormValues) => {
-    data.short_url = `poplink.site/short/` + data.short_url;
     try {
       var response;
       if (isToken) {
@@ -141,6 +142,10 @@ const PasteLink = () => {
         setOutputLink(data.short_url);
         setIsShortened(!isShortened);
       } else {
+          if(responseData.errors === "Short Url Sudah Terdaftar"){
+            setIsExist(true);
+            setIsPopUpVisible(true);
+          }
         console.log(responseData);
       }
     } catch (error) {
@@ -263,7 +268,7 @@ const PasteLink = () => {
             <label
               htmlFor="copy"
               className="text-black font-semi-bold cursor-pointer truncate"
-            >{`${OutputLink}`}</label>
+            >{`poplink.site/short/${OutputLink}`}</label>
             <button id="copy" type="button" onClick={HandleOnCopy}>
               <MdContentCopy
                 style={{ color: "#766FF9" }}
@@ -285,6 +290,11 @@ const PasteLink = () => {
       {isCopied && isPopUpVisible && (
         <Popup message="Link Copied!" onClose={HandleOnClose} />
       )}
+
+      {isExist && isPopUpVisible && (
+        <Popup message="This custom link is already exists and cannot be duplicated" onClose={HandleOnClose} />
+      )}
+
     </>
   );
 };
