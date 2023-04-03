@@ -29,7 +29,6 @@ const Foryou = () => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
-
   async function fetchData(page: number, perPage: number) {
     try {
       const response = await fetch(
@@ -82,7 +81,7 @@ const Foryou = () => {
   };
   return (
     <>
-      <div className="flex overflow-y-clip w-full links-w feeds-h border-2">
+      <div className="flex overflow-y-clip w-full links-w feeds-h">
         <div className="flex flex-col mx-[1rem] sm:mx-[1.5rem] w-full lg:w-[65%] overflow-y-auto">
           {data.map((feed) => (
             <div
@@ -118,6 +117,9 @@ const Foryou = () => {
             >
               prev
             </button>
+            <h1 className="text-md text-indigo-500 font-medium">
+              showing page {page} of {totalPages}
+            </h1>
             <button
               className="w-[5rem] h-[2.25rem] bg-indigo-300 rounded-lg ml-2 uppercase font-medium"
               onClick={nextPage}

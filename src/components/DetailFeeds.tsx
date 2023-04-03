@@ -10,7 +10,7 @@ interface Detailprops {
 const offset = `calc(100vh - 3rem)`;
 const DetailFeeds = ({ title, time, user, url }: Detailprops) => {
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(`poplink.site/short/` + url);
   };
 
   return (
@@ -29,10 +29,10 @@ const DetailFeeds = ({ title, time, user, url }: Detailprops) => {
           <span className="text-indigo-600  text-sm">By User :</span> {user}
         </h1>
 
-        <div className="flex flex-row relative items-center gap-x-4 border-2">
+        <div className="flex flex-row relative items-center gap-x-4">
           <BsArrowReturnRight className="text-indigo-500 text-3xl hidden lg:inline" />
           <h1 className="text-md lg:text-xl font-semibold text-ellipsis overflow-hidden flex-grow pr-[7rem]">
-            Poppins.in/{url}
+            poplink.site/short/{url}
           </h1>
           <button
             onClick={handleCopyClick}
