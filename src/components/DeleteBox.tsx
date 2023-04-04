@@ -29,12 +29,10 @@ const DeleteBox = ({ id, onClick }: DeleteProps) => {
       );
       const responseData = await response.json();
       if (response.ok) {
-        setMessage(responseData.message);
         onClick(responseData.message);
         console.log(responseData.message);
         setIsPopUpVisible(true);
       } else {
-        setMessage(responseData.message);
         onClick(responseData.message);
       }
     } catch (error) {}
@@ -58,6 +56,7 @@ const DeleteBox = ({ id, onClick }: DeleteProps) => {
       >
         <RxTrash /> Delete
       </button>
+      {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
     </section>
   );
 };

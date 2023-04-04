@@ -18,24 +18,6 @@ export const FormDataRegister: InputField[] = [
     label: "email",
     name: "email",
   },
-  {
-    type: "password",
-    label: "password",
-    name: "password",
-  },
-];
-
-export const FormDataLogin: InputField[] = [
-  {
-    type: "email",
-    label: "email",
-    name: "email",
-  },
-  {
-    type: "password",
-    label: "password",
-    name: "password",
-  },
 ];
 
 export const LinkProps = [
@@ -79,7 +61,7 @@ export const LinkProps = [
     short_url: "shortify.testingEmpat",
     long_url: "https://docs.github.com/en/pull-requests/testing5",
   },
-    {
+  {
     id: 6,
     date: "2 January 2023",
     user: "Testing Empat",

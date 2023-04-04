@@ -78,7 +78,7 @@ const LinkDetails = ({
   const [isCopied, setIsCopied] = useState(false);
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(`poplink.site/short/` + short_url);
+    navigator.clipboard.writeText(`poplink.site/` + short_url);
     setIsCopied(true);
     setIsPopUpVisible(true);
   };
@@ -127,10 +127,14 @@ const LinkDetails = ({
         <div className="h-full shadow-md p-8 flex flex-col gap-y-9 bg-white">
           <div className="flex flex-col gap-y-4">
             <div className="w-full flex flex-col lg:flex-row gap-y-4 justify-between">
-              <h3 className="text-2xl font-bold tracking-wide text-indigo-400">
-                <span>poplink.site/short/</span>
+              <Link
+                href={`/${short_url}`}
+                target="_blank"
+                className="text-2xl font-bold tracking-wide text-indigo-400 flex flex-wrap"
+              >
+                <span>poplink.site/</span>
                 {short_url}
-              </h3>
+              </Link>
               <div className="flex items-center justify-start gap-x-2 relative">
                 <button
                   type="button"
@@ -155,11 +159,15 @@ const LinkDetails = ({
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-x-4 overflow-hidden">
+            <div className="flex items-center gap-x-4">
               <BsArrowReturnRight />
-              <p className="text-sm text-[#041267] text-opacity-60">
+              <a
+                href={long_url}
+                target="_blank"
+                className="text-sm text-[#041267] text-opacity-60 truncate md:te"
+              >
                 {long_url}
-              </p>
+              </a>
             </div>
           </div>
           <div className="flex flex-col gap-y-3">

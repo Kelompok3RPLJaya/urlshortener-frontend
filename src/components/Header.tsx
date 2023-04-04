@@ -60,7 +60,7 @@ const Header = ({ HandleOnClick, currentPath, onClick }: HeaderProps) => {
   return (
     <section className="min-h-[4.5rem] w-full bg-indigo-50 flex justify-between px-[1.6rem] box-border text-[#041267]">
       <div className="flex items-center gap-x-8">
-        {currentPath == "/User" && (
+        {currentPath == "/sections/User" && (
           <button type="button" onClick={HandleOnClick}>
             <HiOutlineMenu size={30} />
           </button>
@@ -73,9 +73,9 @@ const Header = ({ HandleOnClick, currentPath, onClick }: HeaderProps) => {
       <div className="flex justify-center items-center gap-x-4">
         {isToken && (
           <div className="flex items-center gap-x-4">
-            {currentPath !== "/User" && (
+            {currentPath !== "/sections/User" && (
               <Link
-                href="/User"
+                href="/sections/User"
                 className="px-4 py-2 text-sm text-[#041267] rounded-3xl"
               >
                 Dashboard
@@ -94,13 +94,13 @@ const Header = ({ HandleOnClick, currentPath, onClick }: HeaderProps) => {
         {!isToken && (
           <>
             <Link
-              href="/Register"
+              href="/sections/forms/Register"
               className="px-4 py-2 text-sm bg-[#041267] text-gray-100 rounded-3xl"
             >
               Register
             </Link>
             <Link
-              href="/Login"
+              href="/sections/forms/Login"
               className="px-4 py-2 text-sm bg-[#041267] text-gray-100 rounded-3xl"
             >
               Log in
