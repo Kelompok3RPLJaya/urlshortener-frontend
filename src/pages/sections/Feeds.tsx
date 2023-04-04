@@ -14,7 +14,7 @@ const Feeds = () => {
   };
 
   return (
-    <section className="flex flex-wrap w-full bg-gray-50">
+    <section className="flex flex-wrap w-full links-w bg-gray-50">
       <div className="w-full">
         <div className="flex flex-row h-[4rem] items-center gap-x-[2rem] px-[2rem] font-bold text-xl sm:text-lg ">
           <h1 className="">Feeds</h1>
