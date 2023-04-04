@@ -86,13 +86,13 @@ const Sidebar = () => {
     <>
       <Header
         HandleOnClick={HandleOnClick}
-        currentPath={`/User`}
+        currentPath="/sections/User"
         onClick={onClick}
       />
       <div className="flex landing-h">
         <section
           className={`bg-indigo-50 landing-h absolute z-10 md:static ${
-            sidebar ? "w-[15rem]" : "md:min-w-[5rem] w-0"
+            sidebar ? "w-[15rem]" : "md:w-[5rem] w-0"
           }`}
         >
           <div

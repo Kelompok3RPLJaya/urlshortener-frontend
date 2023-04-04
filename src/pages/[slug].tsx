@@ -10,7 +10,7 @@ interface accessProp {
 export default function ShortUrl() {
   const router = useRouter();
   const { slug } = router.query;
-  const short_url = slug?.[0];
+  const short_url = slug;
 
   const {
     register,
@@ -87,7 +87,7 @@ export default function ShortUrl() {
     }
   }, [short_url]);
 
-  if (!short_url || !router.asPath.startsWith("/short/")) {
+  if (!short_url) {
     return (
       <section className="min-h-screen w-full flex justify-center items-center">
         <div className="flex flex-col items-center gap-y-6">

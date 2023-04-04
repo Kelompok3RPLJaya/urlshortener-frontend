@@ -84,6 +84,7 @@ const EditBar = ({
     setIsCopied(false);
     setIsMessage(false);
   };
+  const HandleOnClick = () => {};
 
   return (
     <section className="w-full landing-h flex flex-col p-5 gap-y-8">
@@ -161,9 +162,9 @@ const EditBar = ({
           <div className="w-full h-[.7px] bg-[#273143] bg-opacity-40"></div>
           <button
             type="submit"
-            className="uppercase text-sm bg-indigo-300 py-3 font-semibold text-[#041267]"
+            className="uppercase text-sm bg-indigo-300 py-3 font-semibold text-[#041267] hover:bg-indigo-400"
           >
-            <Link href="/User">save</Link>
+            save
           </button>
         </div>
       </form>

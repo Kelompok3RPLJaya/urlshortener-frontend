@@ -20,18 +20,6 @@ export default function Home() {
       <main>
         <Header HandleOnClick={() => {}} currentPath="" onClick={() => {}} />
         <Hero />
-        {/* <Link
-            href="/Register"
-            className="px-6 py-3 bg-indigo-400 text-gray-100 rounded-3xl"
-          >
-            Register
-          </Link>
-          <Link
-            href="/Login"
-            className="px-6 py-3 bg-indigo-400 text-gray-100 rounded-3xl"
-          >
-            Log in
-          </Link> */}
       </main>
     </>
   );

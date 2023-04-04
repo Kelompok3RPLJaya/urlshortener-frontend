@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import Profile from "@/pages/sections/setting-section/Profile";
+import Profile from "@/pages/sections/Profile";
 import { BiChevronDown } from "react-icons/bi";
 
 const SettingNav = () => {

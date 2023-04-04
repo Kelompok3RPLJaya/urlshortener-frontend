@@ -238,7 +238,7 @@ const Dashboard = () => {
 
   if (!success) {
     return (
-      <section className="w-full flex justify-center items-center text-[#041267]">
+      <section className="w-full links-w flex justify-center items-center text-[#041267]">
         <div className="flex flex-col items-center gap-y-6">
           <div className="w-6 h-6 rounded-full bg-indigo-300 animate-bounce"></div>
           <div className="text-lg font-medium text-[#041267] flex flex-col items-center gap-y-2">
@@ -362,7 +362,7 @@ const Dashboard = () => {
                   onClick={nextPage}
                   className="p-2 rounded-full shadow-md animate-bounce"
                 >
-                  <BsArrowDown size={25} color="#6366f1" />
+                  <BsArrowDown size={22} color="#041267" />
                 </button>
               </div>
             )}
