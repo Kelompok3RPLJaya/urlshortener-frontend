@@ -15,7 +15,6 @@ import Popup from "@/components/Popup";
 interface FilterValues {
   filter: string;
   search: string;
-  isPublic: boolean;
 }
 
 interface LinkData {
@@ -49,9 +48,10 @@ const Dashboard = () => {
 
   const onSubmit = async (prop: FilterValues) => {
     setMax(true);
+    console.log(prop);
     try {
       const response = await fetch(
-        `https://urlshortener-backend-production.up.railway.app/api/url_shortener/me?search=${prop.search}`,
+        `https://urlshortener-backend-production.up.railway.app/api/url_shortener/me?search=${prop.search}&filter=${prop.filter}`,
         {
           headers: {
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -104,7 +104,7 @@ const Dashboard = () => {
   const [message, setMessage] = useState<string>("");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(4);
-  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>();
   const [totalData, setTotalData] = useState<number>(0);
   const [max, setMax] = useState(false);
   const HandleEdit = (text: string) => {
@@ -144,9 +144,11 @@ const Dashboard = () => {
         setSuccess(true);
         setTotalPages(responseData.data.meta.max_page);
         setTotalData(responseData.data.meta.total_data);
-        if (page == totalPages) {
+        console.log(totalPages);
+        if (page >= responseData.data.meta.max_page) {
           setMax(true);
         }
+        console.log(max);
         if (page == 1) {
           setData(responseData.data.data_per_page);
           if (responseData.data.data_per_page.length == 0) {
@@ -154,7 +156,7 @@ const Dashboard = () => {
             setMax(true);
           } else if (responseData.data.data_per_page.length > 0) {
             setFound(true);
-            setMax(false);
+            // setMax(false);
           }
           setActive(responseData.data.data_per_page[0]?.id);
           setDetails(
@@ -261,14 +263,18 @@ const Dashboard = () => {
                 htmlFor="filter-date"
                 className="flex items-center gap-x-1"
               >
-                <input type="radio" value="date" {...register("filter")} />
+                <input
+                  type="radio"
+                  value="created_at"
+                  {...register("filter")}
+                />
                 <p className="text-sm">Date created</p>
               </label>
               <label
                 htmlFor="filter-alphabet"
                 className="flex items-center gap-x-1"
               >
-                <input type="radio" value="alphabet" {...register("filter")} />
+                <input type="radio" value="short_url" {...register("filter")} />
                 <p className="text-sm">Alphabet</p>
               </label>
             </div>
@@ -283,15 +289,6 @@ const Dashboard = () => {
                   placeholder="search"
                   {...register("search")}
                 />
-              </label>
-              <label
-                htmlFor="linkType"
-                className="flex items-center gap-x-1 order-3 opacity-0"
-              >
-                <input type="checkbox" {...register("isPublic")} />
-                <p className="text-[.9rem] text-opacity-80 text-[#041267]">
-                  Private links
-                </p>
               </label>
               <button
                 type="submit"
@@ -372,7 +369,7 @@ const Dashboard = () => {
               active ? "flex" : " right-[100%]"
             }`}
           >
-            <div className="min-h-[4.5rem] w-full bg-[#273143] text-indigo-50 flex items-center justify-between px-6 sm:hidden">
+            <div className="min-h-[4.5rem] w-full bg-[#273143] text-indigo-50 flex items-center justify-between px-6 sm:hidden sticky top-0 z-10">
               <p className="uppercase font-medium tracking-wide">
                 Link Details
               </p>

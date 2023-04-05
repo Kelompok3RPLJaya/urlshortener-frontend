@@ -34,7 +34,7 @@ const Register = () => {
     },
   });
   register("agreement", { required: "This agreement is required" });
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const onSubmit = async (data: FormValues) => {
@@ -69,7 +69,7 @@ const Register = () => {
   const HandleOnClose = () => {
     setIsPopUpVisible(false);
     if (responseMessage == "Berhasil Menambahkan User") {
-      router.push("/Login");
+      router.push("/sections/forms/Login");
     }
   };
 
@@ -154,7 +154,7 @@ const Register = () => {
         <div>
           <p className="text-center md:text-sm text-[#041267] text-opacity-80">
             already have an account?{" "}
-            <Link href="/Login" className="text-[#766FF9]">
+            <Link href="/sections/forms/Login" className="text-[#766FF9]">
               Log in here
             </Link>
           </p>

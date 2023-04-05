@@ -83,7 +83,7 @@ const SettingNav = () => {
       </button>
       <div className="flex overflow-y-clip">
         {profile && (
-          <div className="text-[#041267] flex flex-col px-6 py-8 gap-y-8 bg-white profil-h text-sm setting-h md:border-r absolute w-full top-[4rem] md:static md:w-[45%]">
+          <div className="text-[#041267] flex flex-col px-6 py-8 gap-y-8 bg-white profil-h text-sm setting-h md:border-r absolute w-full top-[4rem] md:static md:w-[45%] z-[1]">
             <div className="flex flex-col gap-y-2">
               <h2 className="font-medium">Your settings</h2>
               {links1.map((link) => (

@@ -67,7 +67,7 @@ const Sidebar = () => {
       icon: <IoMdLink size={18} />,
       active: active === "about",
       onClick: () => {
-        updateActive("faq", <FAQ />);
+        updateActive("about", <FAQ />);
         showSidebar(false);
       },
     },
