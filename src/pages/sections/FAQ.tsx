@@ -11,13 +11,13 @@ const HandleOnClick = (isToggle : boolean, setIsToggle : React.Dispatch<React.Se
     setIsToggle(!isToggle);
 }
 
-  return <section className="flex flex-col w-full">
+  return <section className="flex flex-col w-full links-w">
     
     <div style={{ backgroundImage: "url('/landingBG.jpg')" }} className="bg-center bg-cover bg-no-repeat landing-h w-screen">
 
         <div className='flex flex-col justify-center items-center content-center gap-10 h-full'>
 
-        <div className='flex flex-col items-center flex-wrap font-bold text-2xl md:text-4xl lg:text-5xl text-[#0E9EE8] drop-shadow-lg'>Frequently Asked Questions</div>
+        <div className='flex flex-col items-center flex-wrap font-bold text-xl sm:text-2xl md:text-4xl lg:text-5xl text-[#0E9EE8] drop-shadow-lg'>Frequently Asked Questions</div>
 
             <div className="flex flex-col lg:flex-row w-[85%] gap-10">
 
