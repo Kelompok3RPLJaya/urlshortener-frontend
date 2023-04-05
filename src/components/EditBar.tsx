@@ -33,6 +33,7 @@ const EditBar = ({
     defaultValues: {
       title: "",
       short_url: "",
+      is_feeds: is_feeds,
     },
   });
 
@@ -75,7 +76,7 @@ const EditBar = ({
 
   const [isCopied, setIsCopied] = useState(false);
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(short_url);
+    navigator.clipboard.writeText(`poplink.site/` + short_url);
     setIsCopied(true);
     setIsPopUpVisible(true);
   };
@@ -89,7 +90,9 @@ const EditBar = ({
   return (
     <section className="w-full landing-h flex flex-col p-5 gap-y-8">
       <div className="flex flex-col gap-y-2">
-        <div className="text-[#041267] font-medium">{short_url}</div>
+        <div className="text-[#041267] font-medium">
+          poplink.site/{short_url}
+        </div>
         <div className="flex justify-start gap-x-1 items-center text-sm text-indigo-500">
           <button
             type="button"
@@ -141,9 +144,7 @@ const EditBar = ({
             <div className="bg-indigo-50 flex flex-col gap-y-2 p-3 text-sm">
               <label htmlFor="">Custom Url</label>
               <div className="flex items-center gap-x-1">
-                <p className="text-[#273143] text-opacity-70">
-                  poplink.site/short/
-                </p>
+                <p className="text-[#273143] text-opacity-70">poplink.site/</p>
                 <input
                   type="text"
                   {...register("short_url")}

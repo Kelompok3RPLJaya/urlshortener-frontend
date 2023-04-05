@@ -2,6 +2,8 @@ import Popup from "@/components/Popup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { VscEye } from "react-icons/vsc";
+import { VscEyeClosed } from "react-icons/vsc";
 
 interface userData {
   id: string;
@@ -18,6 +20,7 @@ interface newUserData {
   name: string;
   email: string;
   password: string;
+  confirm: string;
 }
 
 const Profile = () => {
@@ -30,16 +33,19 @@ const Profile = () => {
     formState: { errors },
   } = useForm<newUserData>();
 
-  const password = watch("password");
+  const wpassword = watch("password");
+  const confirm = watch("confirm");
 
+  const [toggle1, setToggle1] = useState(false);
+  const [toggle2, setToggle2] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const [data, setData] = useState<userData>();
   const [success, setSuccess] = useState<boolean>(false);
   const [change, setChange] = useState(false);
 
-  const onSubmit = async (data: newUserData) => {
-    console.log(data);
+  const onSubmit = async ({ name, email, password }: newUserData) => {
+    console.log({ name, email, password });
     try {
       const response = await fetch(
         "https://urlshortener-backend-production.up.railway.app/api/user/edit",
@@ -49,7 +55,7 @@ const Profile = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${window.localStorage.getItem("token")}`,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ name, email, password }),
         }
       );
       const responseData = await response.json();
@@ -166,20 +172,65 @@ const Profile = () => {
               </div>
               <div className="flex flex-col gap-y-3 text-sm">
                 <h3 className="text-base font-medium">New password</h3>
-                <input
-                  type="text"
-                  placeholder="password"
-                  className="px-4 py-3 border w-[18rem] rounded-md"
-                />
+                <div className="relative w-fit">
+                  <input
+                    type={toggle1 ? "text" : "password"}
+                    {...register("password", {
+                      minLength: {
+                        value: 8,
+                        message: "minimum 8 characters",
+                      },
+                    })}
+                    placeholder="password"
+                    className={`px-4 py-3 border w-[18rem] rounded-md ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-1/2 -translate-y-1/2 right-5"
+                    onClick={() => setToggle1(!toggle1)}
+                  >
+                    {toggle1 ? (
+                      <VscEye size={20} />
+                    ) : (
+                      <VscEyeClosed size={20} />
+                    )}
+                  </button>
+                </div>
+                <p className="text-sm text-red-600 pl-4 box-border">
+                  {errors.password?.message}
+                </p>
               </div>
               <div className="flex flex-col gap-y-3 text-sm">
                 <h3 className="text-base font-medium">Confirm new password</h3>
-                <input
-                  type="text"
-                  {...register("password")}
-                  placeholder="confirm password"
-                  className="px-4 py-3 border w-[18rem] rounded-md"
-                />
+                <div className="relative w-fit">
+                  <input
+                    type={toggle2 ? "text" : "password"}
+                    {...register("confirm", {
+                      validate: (value) =>
+                        value == wpassword || "password must match",
+                    })}
+                    placeholder="confirm password"
+                    className={`px-4 py-3 border w-[18rem] rounded-md ${
+                      errors.confirm ? "border-red-500" : ""
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-1/2 -translate-y-1/2 right-5"
+                    onClick={() => setToggle2(!toggle2)}
+                  >
+                    {toggle2 ? (
+                      <VscEye size={20} />
+                    ) : (
+                      <VscEyeClosed size={20} />
+                    )}
+                  </button>
+                </div>
+                <p className="text-sm text-red-600 pl-4 box-border">
+                  {errors.confirm?.message}
+                </p>
               </div>
               <button
                 type="submit"

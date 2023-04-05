@@ -35,6 +35,7 @@ export default function ShortUrl() {
         }
       );
       const responseData = await response.json();
+      console.log(responseData);
       console.log(data);
       if (response.ok) {
         setTimeout(() => {
@@ -42,6 +43,9 @@ export default function ShortUrl() {
         }, 500);
         console.log(data);
       } else {
+        setTimeout(() => {
+          window.location.href = "/404";
+        }, 500);
         console.log(responseData.message);
         setMessage(responseData.errors);
         setIsPopUpVisible(true);
@@ -75,6 +79,10 @@ export default function ShortUrl() {
           }, 1500);
 
           console.log("masuk private");
+        } else if (responseData.status == false) {
+          setTimeout(() => {
+            window.location.href = "/404";
+          }, 500);
         }
         setMessage(responseData.message);
       }

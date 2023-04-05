@@ -32,7 +32,7 @@ const Login = () => {
   });
   register("reminder");
 
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
   const onSubmit = async (data: FormValues) => {
@@ -147,7 +147,7 @@ const Login = () => {
         <div>
           <p className="text-center md:text-sm text-[#041267] text-opacity-80">
             don&rsquo;t have an account yet?{" "}
-            <Link href="/Register" className="text-[#766FF9]">
+            <Link href="/sections/forms/Register" className="text-[#766FF9]">
               Sign up here
             </Link>
           </p>
