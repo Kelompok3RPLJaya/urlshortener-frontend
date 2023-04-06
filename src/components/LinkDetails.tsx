@@ -22,6 +22,7 @@ interface linkProps {
   is_feeds: boolean;
   id: string;
   is_private: boolean;
+  views: number;
   onClickEdit: (text: string) => void;
   onClickUpdate: (text: string) => void;
   onClickDelete: (text: string) => void;
@@ -36,6 +37,7 @@ const LinkDetails = ({
   is_feeds,
   id,
   is_private,
+  views,
   onClickEdit,
   onClickUpdate,
   onClickDelete,
@@ -182,9 +184,15 @@ const LinkDetails = ({
               </Link>
             </div>
           </div>
-          <div className="flex items-center gap-x-2 text-[#041267] text-opacity-70">
-            <FiTag />
-            {access}
+          <div className="flex items-center gap-x-4">
+            <div className="flex items-center gap-x-2 text-[#041267] text-opacity-70">
+              <FiTag />
+              {access}
+            </div>
+            <div className="flex items-center gap-x-2 text-[#041267] text-opacity-70">
+              <FiTag />
+              {views}
+            </div>
           </div>
         </div>
         {isCopied && isPopUpVisible && (

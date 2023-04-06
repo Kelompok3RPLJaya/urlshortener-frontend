@@ -71,6 +71,7 @@ const Dashboard = () => {
             is_feeds={responseData.data.data_per_page[0]?.is_feeds}
             id={responseData.data.data_per_page[0]?.id}
             is_private={responseData.data.data_per_page[0]?.is_private}
+            views={responseData.data.data_per_page[0]?.views}
             onClickEdit={HandleEdit}
             onClickUpdate={HandleUpdate}
             onClickDelete={HandleDelete}
@@ -159,6 +160,7 @@ const Dashboard = () => {
               is_feeds={responseData.data.data_per_page[0]?.is_feeds}
               id={responseData.data.data_per_page[0]?.id}
               is_private={responseData.data.data_per_page[0]?.is_private}
+              views={responseData.data.data_per_page[0]?.views}
               onClickEdit={HandleEdit}
               onClickUpdate={HandleUpdate}
               onClickDelete={HandleDelete}
@@ -215,6 +217,7 @@ const Dashboard = () => {
             is_feeds={responseData.data.data_per_page[0]?.is_feeds}
             id={responseData.data.data_per_page[0]?.id}
             is_private={responseData.data.data_per_page[0]?.is_private}
+            views={responseData.data.data_per_page[0]?.views}
             onClickEdit={HandleEdit}
             onClickUpdate={HandleUpdate}
             onClickDelete={HandleDelete}
@@ -251,7 +254,8 @@ const Dashboard = () => {
     short_url: string,
     long_url: string,
     is_feeds: boolean,
-    is_private: boolean
+    is_private: boolean,
+    views: number
   ) => {
     setActive(id);
     setDetails(
@@ -264,6 +268,7 @@ const Dashboard = () => {
         is_feeds={is_feeds}
         id={id}
         is_private={is_private}
+        views={views}
         onClickEdit={HandleEdit}
         onClickUpdate={HandleUpdate}
         onClickDelete={HandleDelete}
@@ -381,7 +386,8 @@ const Dashboard = () => {
                       link.short_url,
                       link.long_url,
                       link.is_feeds,
-                      link.is_private
+                      link.is_private,
+                      link.views
                     );
                   }}
                   key={link.id}
