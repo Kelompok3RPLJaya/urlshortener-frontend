@@ -188,12 +188,12 @@ const LinkDetails = ({
           </div>
         </div>
         {isCopied && isPopUpVisible && (
-          <Popup message="Copied!" onClose={HandleOnClose} />
+          <Popup message="Link copied!" onClose={HandleOnClose} />
         )}
       </div>
 
       <section
-        className={`absolute right-0 top-0 h-full bg-white w-[20rem] shadow-md transition-all duration-300 ${
+        className={`absolute right-0 top-0 h-full bg-white w-[20rem] shadow-md transition-all duration-300 z-[11] ${
           isEdit ? "" : " translate-x-[20rem]"
         }`}
       >

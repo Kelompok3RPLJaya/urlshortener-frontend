@@ -49,7 +49,7 @@ const Following = () => {
 
   return (
     <>
-      <div className="flex overflow-y-clip w-full links-w feeds-h border-2">
+      <div className="flex overflow-y-clip w-full links-w feeds-h">
         <div className="flex flex-col mx-[1rem] sm:mx-[1.5rem] w-full lg:w-[65%] overflow-y-auto ">
           {LinkProps.map((feed) => (
             <div

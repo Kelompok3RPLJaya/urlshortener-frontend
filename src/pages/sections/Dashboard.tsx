@@ -32,13 +32,6 @@ interface LinkData {
 }
 
 const Dashboard = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-  // const token = window.localStorage.getItem("token");
   const {
     register,
     handleSubmit,
@@ -107,6 +100,8 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState<number>();
   const [totalData, setTotalData] = useState<number>(0);
   const [max, setMax] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
   const HandleEdit = (text: string) => {
     setIsEdit(!isEdit);
     setIsPopUpVisible(true);
@@ -126,10 +121,7 @@ const Dashboard = () => {
     setChange(true);
   };
 
-  async function fetchData() {
-    if (change) {
-      setPage(1);
-    }
+  async function fetchFreshData() {
     try {
       const response = await fetch(
         `https://urlshortener-backend-production.up.railway.app/api/url_shortener/me?page=${page}&per_page=${perPage}`,
@@ -144,19 +136,17 @@ const Dashboard = () => {
         setSuccess(true);
         setTotalPages(responseData.data.meta.max_page);
         setTotalData(responseData.data.meta.total_data);
-        console.log(totalPages);
         if (page >= responseData.data.meta.max_page) {
           setMax(true);
+        } else {
+          setMax(false);
         }
-        console.log(max);
         if (page == 1) {
           setData(responseData.data.data_per_page);
           if (responseData.data.data_per_page.length == 0) {
             setFound(false);
-            setMax(true);
           } else if (responseData.data.data_per_page.length > 0) {
             setFound(true);
-            // setMax(false);
           }
           setActive(responseData.data.data_per_page[0]?.id);
           setDetails(
@@ -188,18 +178,69 @@ const Dashboard = () => {
     } catch (error) {}
   }
 
+  async function fetchUpdatedData() {
+    try {
+      const response = await fetch(
+        `https://urlshortener-backend-production.up.railway.app/api/url_shortener/me?page=${1}&per_page=${perPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const responseData = await response.json();
+      if (response.ok) {
+        setSuccess(true);
+        setTotalPages(responseData.data.meta.max_page);
+        setTotalData(responseData.data.meta.total_data);
+        if (1 >= responseData.data.meta.max_page) {
+          setMax(true);
+        } else {
+          setMax(false);
+        }
+        setData(responseData.data.data_per_page);
+        if (responseData.data.data_per_page.length == 0) {
+          setFound(false);
+        } else if (responseData.data.data_per_page.length > 0) {
+          setFound(true);
+        }
+        setActive(responseData.data.data_per_page[0]?.id);
+        setDetails(
+          <LinkDetails
+            title={responseData.data.data_per_page[0]?.title}
+            date={responseData.data.data_per_page[0]?.created_at}
+            user={responseData.data.data_per_page[0]?.username}
+            short_url={responseData.data.data_per_page[0]?.short_url}
+            long_url={responseData.data.data_per_page[0]?.long_url}
+            is_feeds={responseData.data.data_per_page[0]?.is_feeds}
+            id={responseData.data.data_per_page[0]?.id}
+            is_private={responseData.data.data_per_page[0]?.is_private}
+            onClickEdit={HandleEdit}
+            onClickUpdate={HandleUpdate}
+            onClickDelete={HandleDelete}
+          />
+        );
+        setChange(false);
+      } else {
+        setError(true);
+        setErrorMessage(responseData.message);
+        setSuccess(false);
+      }
+    } catch (error) {}
+  }
+
   useEffect(() => {
-    if (mounted) {
-      fetchData();
-    } else {
-      setTimeout(() => {
-        fetchData();
-      }, 500);
-    }
-  }, [isUpdate, isEdit, isDelete, page, perPage]);
+    setTimeout(() => {
+      fetchFreshData();
+    }, 500);
+  }, [page]);
+
+  useEffect(() => {
+    fetchUpdatedData();
+  }, [isEdit, isDelete, isUpdate]);
 
   const nextPage = () => {
-    setPage((prev) => prev + 1);
+    setPage(page + 1);
   };
 
   const showDetails = (
@@ -238,7 +279,15 @@ const Dashboard = () => {
     setIsPopUpVisible(false);
   };
 
-  if (!success) {
+  if (error) {
+    <section className="w-full links-w flex justify-center items-center text-[#041267]">
+      <div className="flex flex-col items-center gap-y-6">
+        <div className="text-lg font-medium text-[#041267] flex flex-col items-center gap-y-2">
+          <p>{errorMessage}</p>
+        </div>
+      </div>
+    </section>;
+  } else if (!success) {
     return (
       <section className="w-full links-w flex justify-center items-center text-[#041267]">
         <div className="flex flex-col items-center gap-y-6">
