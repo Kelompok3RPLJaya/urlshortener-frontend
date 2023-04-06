@@ -23,6 +23,7 @@ export default function ShortUrl() {
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
 
   const onSubmit = async (data: accessProp) => {
+    console.log("masuk submit");
     try {
       const response = await fetch(
         `https://urlshortener-backend-production.up.railway.app/api/url_shortener/long_url/${short_url}`,
@@ -67,23 +68,26 @@ export default function ShortUrl() {
       const responseData = await response.json();
       console.log(responseData);
       if (response.ok) {
+        console.log("masuk if");
         if (responseData.data.is_private == false) {
           setTimeout(() => {
             window.location.href = responseData.data.long_url;
           }, 1500);
+        } else {
+          if (responseData.data.is_private == true) {
+            setTimeout(() => {
+              setIsPrivate(true);
+            }, 1500);
+          } else if (responseData.status == false) {
+            setTimeout(() => {
+              window.location.href = "/404";
+            }, 500);
+          }
         }
       } else {
-        if (responseData.data.is_private == true) {
-          setTimeout(() => {
-            setIsPrivate(true);
-          }, 1500);
-
-          console.log("masuk private");
-        } else if (responseData.status == false) {
-          setTimeout(() => {
-            window.location.href = "/404";
-          }, 500);
-        }
+        setTimeout(() => {
+          window.location.href = "/404";
+        }, 500);
         setMessage(responseData.message);
       }
     } catch (error) {}

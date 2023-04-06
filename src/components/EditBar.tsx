@@ -170,7 +170,7 @@ const EditBar = ({
         </div>
       </form>
       {isCopied && isPopUpVisible && (
-        <Popup message="Copied!" onClose={HandleOnClose} />
+        <Popup message="Link copied!" onClose={HandleOnClose} />
       )}
     </section>
   );
