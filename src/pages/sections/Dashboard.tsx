@@ -31,7 +31,11 @@ interface LinkData {
   DeleteAt: any | undefined;
 }
 
-const Dashboard = () => {
+interface dashboardProp {
+  handleNew: () => void;
+}
+
+const Dashboard = ({ handleNew }: dashboardProp) => {
   const {
     register,
     handleSubmit,
@@ -90,7 +94,6 @@ const Dashboard = () => {
   const [details, setDetails] = useState<JSX.Element>();
   const [active, setActive] = useState<string>();
   const [found, setFound] = useState<boolean>(false);
-  const [change, setChange] = useState(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -107,19 +110,16 @@ const Dashboard = () => {
     setIsEdit(!isEdit);
     setIsPopUpVisible(true);
     setMessage(text);
-    setChange(true);
   };
   const HandleUpdate = (text: string) => {
     setIsUpdate(!isUpdate);
     setIsPopUpVisible(true);
     setMessage(text);
-    setChange(true);
   };
   const HandleDelete = (text: string) => {
     setIsDelete(!isDelete);
     setIsPopUpVisible(true);
     setMessage(text);
-    setChange(true);
   };
 
   async function fetchFreshData() {
@@ -166,7 +166,6 @@ const Dashboard = () => {
               onClickDelete={HandleDelete}
             />
           );
-          setChange(false);
         } else {
           setData((prevData) => [
             ...prevData,
@@ -223,7 +222,6 @@ const Dashboard = () => {
             onClickDelete={HandleDelete}
           />
         );
-        setChange(false);
       } else {
         setError(true);
         setErrorMessage(responseData.message);
@@ -303,152 +301,143 @@ const Dashboard = () => {
         </div>
       </section>
     );
-  } else {
-    return (
-      <section className="w-full links-w flex flex-col">
-        <div className="min-h-[12rem] flex justify-between items-center px-8 box-border border-b">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col justify-center gap-y-4 min-w-[15rem]"
+  }
+  return (
+    <section className="w-full links-w flex flex-col">
+      <div className="min-h-[12rem] flex justify-between items-center px-8 box-border border-b">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col justify-center gap-y-4 min-w-[15rem]"
+        >
+          <h2 className="text-2xl font-bold">Links</h2>
+          <div className="flex items-center gap-x-2">
+            <label htmlFor="filter-date" className="flex items-center gap-x-1">
+              <input type="radio" value="created_at" {...register("filter")} />
+              <p className="text-sm">Date created</p>
+            </label>
+            <label
+              htmlFor="filter-alphabet"
+              className="flex items-center gap-x-1"
+            >
+              <input type="radio" value="short_url" {...register("filter")} />
+              <p className="text-sm">Alphabet</p>
+            </label>
+          </div>
+          <div className="flex items-center gap-x-4">
+            <label
+              htmlFor="tag"
+              className="max-w-[8rem] border-2 rounded-md order-2 opacity-0 md:opacity-100"
+            >
+              <input
+                type="text"
+                className="px-3 py-[.4rem] w-full rounded-md border-2 border-indigo-300 text-sm"
+                placeholder="search"
+                {...register("search")}
+              />
+            </label>
+            <button
+              type="submit"
+              className="flex items-center gap-x-2 px-4 py-2 rounded-md bg-indigo-300 order-1 hover:bg-indigo-400"
+            >
+              <AiOutlineSwap className=" rotate-90" />
+              <p>Filter</p>
+            </button>
+          </div>
+        </form>
+
+        <div className="flex flex-wrap items-center justify-end gap-y-2 gap-x-2">
+          <button
+            type="button"
+            className="p-3 bg-[#041267] text-gray-100 rounded-md text-[.9rem]"
+            onClick={handleNew}
           >
-            <h2 className="text-2xl font-bold">Links</h2>
-            <div className="flex items-center gap-x-2">
-              <label
-                htmlFor="filter-date"
-                className="flex items-center gap-x-1"
+            <TbPlus />
+          </button>
+          <Link
+            href=""
+            className="px-4 py-2 text-center bg-indigo-50 text-[#041267] rounded-md text-[.9rem]"
+          >
+            Upgrade
+          </Link>
+        </div>
+      </div>
+      <div className="flex h-full overflow-y-clip">
+        <div className="w-full flex flex-col gap-y-6 py-6 sm:w-[45%] md:w-1/3 overflow-y-auto">
+          {success && found ? (
+            data.map((link) => (
+              <div
+                className={`flex flex-col px-8 min-h-[8rem] gap-y-1 justify-center border-t border-b cursor-pointer ${
+                  active == link.id ? "bg-indigo-100" : ""
+                }`}
+                onClick={() => {
+                  showDetails(
+                    link.id,
+                    link.title,
+                    link.created_at,
+                    link.username,
+                    link.short_url,
+                    link.long_url,
+                    link.is_feeds,
+                    link.is_private,
+                    link.views
+                  );
+                }}
+                key={link.id}
               >
-                <input
-                  type="radio"
-                  value="created_at"
-                  {...register("filter")}
+                <LinkCard
+                  date={link.created_at}
+                  title={link.title}
+                  short_url={link.short_url}
                 />
-                <p className="text-sm">Date created</p>
-              </label>
-              <label
-                htmlFor="filter-alphabet"
-                className="flex items-center gap-x-1"
-              >
-                <input type="radio" value="short_url" {...register("filter")} />
-                <p className="text-sm">Alphabet</p>
-              </label>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col justify-center items-center gap-y-2">
+              <CiSearch size={40} color="#041267" className="opacity-50" />
+              <p className="tracking-wide text-[#041267] text-opacity-70">
+                Can&rsquo;t find any link for now
+              </p>
             </div>
-            <div className="flex items-center gap-x-4">
-              <label
-                htmlFor="tag"
-                className="max-w-[8rem] border-2 rounded-md order-2 opacity-0 md:opacity-100"
-              >
-                <input
-                  type="text"
-                  className="px-3 py-[.4rem] w-full rounded-md border-2 border-indigo-300 text-sm"
-                  placeholder="search"
-                  {...register("search")}
-                />
-              </label>
+          )}
+          {max ? null : (
+            <div className="w-full flex justify-center items-center">
               <button
-                type="submit"
-                className="flex items-center gap-x-2 px-4 py-2 rounded-md bg-indigo-300 order-1 hover:bg-indigo-400"
+                type="button"
+                onClick={nextPage}
+                className="p-2 rounded-full shadow-md animate-bounce"
               >
-                <AiOutlineSwap className=" rotate-90" />
-                <p>Filter</p>
+                <BsArrowDown size={22} color="#041267" />
               </button>
             </div>
-          </form>
-
-          <div className="flex flex-wrap items-center justify-end gap-y-2 gap-x-2">
-            <Link
-              href=""
-              className="p-3 bg-[#041267] text-gray-100 rounded-md text-[.9rem]"
-            >
-              <TbPlus />
-            </Link>
-            <Link
-              href=""
-              className="px-4 py-2 text-center bg-indigo-50 text-[#041267] rounded-md text-[.9rem]"
-            >
-              Upgrade
-            </Link>
-          </div>
+          )}
         </div>
-        <div className="flex h-full overflow-y-clip">
-          <div className="w-full flex flex-col gap-y-6 py-6 sm:w-[45%] md:w-1/3 overflow-y-auto">
-            {success && found ? (
-              data.map((link) => (
-                <div
-                  className={`flex flex-col px-8 min-h-[8rem] gap-y-1 justify-center border-t border-b cursor-pointer ${
-                    active == link.id ? "bg-indigo-100" : ""
-                  }`}
-                  onClick={() => {
-                    showDetails(
-                      link.id,
-                      link.title,
-                      link.created_at,
-                      link.username,
-                      link.short_url,
-                      link.long_url,
-                      link.is_feeds,
-                      link.is_private,
-                      link.views
-                    );
-                  }}
-                  key={link.id}
-                >
-                  <LinkCard
-                    date={link.created_at}
-                    title={link.title}
-                    short_url={link.short_url}
-                  />
-                </div>
-              ))
+        <div
+          className={`absolute w-full h-full top-0 overflow-x-hidden sm:static sm:w-[55%] md:w-2/3 flex flex-col items-center md:p-8 bg-indigo-50 overflow-y-auto ${
+            active ? "flex" : " right-[100%]"
+          }`}
+        >
+          <div className="min-h-[4.5rem] w-full bg-[#273143] text-indigo-50 flex items-center justify-between px-6 sm:hidden sticky top-0 z-10">
+            <p className="uppercase font-medium tracking-wide">Link Details</p>
+            <button type="button" onClick={HandleOnClick}>
+              <IoClose size={25} />
+            </button>
+          </div>
+          <div className="w-full flex flex-col p-8 gap-y-8 md:p-0">
+            {active ? (
+              details
             ) : (
-              <div className="flex flex-col justify-center items-center gap-y-2">
-                <CiSearch size={40} color="#041267" className="opacity-50" />
+              <div className="w-full h-full flex items-center justify-center min-h-[5rem] bg-white">
                 <p className="tracking-wide text-[#041267] text-opacity-70">
-                  Can&rsquo;t find any link for now
+                  No link selected
                 </p>
               </div>
             )}
-            {max ? null : (
-              <div className="w-full flex justify-center items-center">
-                <button
-                  type="button"
-                  onClick={nextPage}
-                  className="p-2 rounded-full shadow-md animate-bounce"
-                >
-                  <BsArrowDown size={22} color="#041267" />
-                </button>
-              </div>
-            )}
-          </div>
-          <div
-            className={`absolute w-full h-full top-0 overflow-x-hidden sm:static sm:w-[55%] md:w-2/3 flex flex-col items-center md:p-8 bg-indigo-50 overflow-y-auto ${
-              active ? "flex" : " right-[100%]"
-            }`}
-          >
-            <div className="min-h-[4.5rem] w-full bg-[#273143] text-indigo-50 flex items-center justify-between px-6 sm:hidden sticky top-0 z-10">
-              <p className="uppercase font-medium tracking-wide">
-                Link Details
-              </p>
-              <button type="button" onClick={HandleOnClick}>
-                <IoClose size={25} />
-              </button>
-            </div>
-            <div className="w-full flex flex-col p-8 gap-y-8 md:p-0">
-              {active ? (
-                details
-              ) : (
-                <div className="w-full h-full flex items-center justify-center min-h-[5rem] bg-white">
-                  <p className="tracking-wide text-[#041267] text-opacity-70">
-                    No link selected
-                  </p>
-                </div>
-              )}
-            </div>
           </div>
         </div>
-        {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
-      </section>
-    );
-  }
+      </div>
+      {isPopUpVisible && <Popup message={message} onClose={HandleOnClose} />}
+    </section>
+  );
 };
 
 export default Dashboard;

@@ -39,17 +39,20 @@ export default function ShortUrl() {
       console.log(responseData);
       console.log(data);
       if (response.ok) {
-        setTimeout(() => {
-          window.location.href = responseData.data.long_url;
-        }, 500);
+        if (responseData.data.long_url == "") {
+          console.log(responseData.message);
+          setMessage(responseData.message);
+          setIsPopUpVisible(true);
+        } else {
+          setTimeout(() => {
+            window.location.href = responseData.data.long_url;
+          }, 500);
+        }
         console.log(data);
       } else {
         setTimeout(() => {
           window.location.href = "/404";
         }, 500);
-        console.log(responseData.message);
-        setMessage(responseData.errors);
-        setIsPopUpVisible(true);
       }
     } catch (error) {}
     reset();
