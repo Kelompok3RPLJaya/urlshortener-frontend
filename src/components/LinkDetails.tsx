@@ -8,6 +8,7 @@ import { BsQrCode } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { BiCalendarAlt } from "react-icons/bi";
 import { FiTag } from "react-icons/fi";
+import { RiOpenArmLine } from "react-icons/ri";
 import EditBar from "./EditBar";
 import DeleteBox from "./DeleteBox";
 import Popup from "./Popup";
@@ -184,13 +185,13 @@ const LinkDetails = ({
               </Link>
             </div>
           </div>
-          <div className="flex items-center gap-x-4">
+          <div className="flex items-center gap-x-4 justify-between">
             <div className="flex items-center gap-x-2 text-[#041267] text-opacity-70">
               <FiTag />
               {access}
             </div>
             <div className="flex items-center gap-x-2 text-[#041267] text-opacity-70">
-              <FiTag />
+              <RiOpenArmLine size={20} /> opened {` `}
               {views}
             </div>
           </div>

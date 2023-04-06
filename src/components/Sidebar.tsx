@@ -21,8 +21,16 @@ const Sidebar = () => {
       showSidebar(true);
     }
   };
+
+  const handleNewClick = () => {
+    updateActive("home", <Homepage />);
+    showSidebar(false);
+  };
+
   const [active, setActive] = useState("dashboard");
-  const [currentPage, setCurrentPage] = useState(<Dashboard />);
+  const [currentPage, setCurrentPage] = useState(
+    <Dashboard handleNew={handleNewClick} />
+  );
 
   const updateActive = (value: string, page: JSX.Element) => {
     setActive(value);
@@ -49,7 +57,7 @@ const Sidebar = () => {
       icon: <MdOutlineSpaceDashboard size={18} />,
       active: active === "dashboard",
       onClick: () => {
-        updateActive("dashboard", <Dashboard />);
+        updateActive("dashboard", <Dashboard handleNew={handleNewClick} />);
         showSidebar(false);
       },
     },
@@ -91,30 +99,26 @@ const Sidebar = () => {
       />
       <div className="flex landing-h">
         <section
-          className={`bg-indigo-50 landing-h absolute z-10 md:static ${
-            sidebar ? "w-[15rem]" : "md:w-[5rem] w-0"
+          className={`bg-indigo-50 landing-h absolute z-10 md:static transition-[width] duration-300 overflow-x-hidden ${
+            sidebar ? "w-[15rem]" : "md:w-[5.25rem] w-0"
           }`}
         >
-          <div
-            className={`flex flex-col justify-between gap-y-2 py-4 box-border ${
-              sidebar ? "pr-4" : "w-full px-4"
-            }`}
-          >
+          <div className="flex flex-col gap-y-2 py-4">
             {links.map((link) => (
-              <Link
+              <div
                 key={link.title}
-                href=""
-                className={`flex items-center h-10 text-[.9rem] ${
-                  link.active
-                    ? sidebar
-                      ? "bg-indigo-300 rounded-r-3xl"
-                      : "bg-indigo-300 rounded-lg"
-                    : ""
-                } ${sidebar ? "gap-x-3 px-8" : "justify-center"}`}
+                className="px-4 h-10 flex items-center"
                 onClick={link.onClick}
               >
-                {link.icon} {sidebar ? link.title : null}
-              </Link>
+                <Link
+                  href=""
+                  className={`flex items-center gap-x-4 overflow-x-hidden py-[.58rem] px-[.9rem] rounded-lg w-full text-[.9rem] ${
+                    link.active ? "bg-indigo-300" : ""
+                  }`}
+                >
+                  <span>{link.icon}</span> <span>{link.title}</span>
+                </Link>
+              </div>
             ))}
           </div>
         </section>
